@@ -13,38 +13,42 @@ const config = require('./config/app');
 
 const grantApplicationRoutes = require('./modules/GrantApplication/GrantApplicationRoutes');
 
-mongoose.connect(config.mongoUrl);
-const db = mongoose.connection;
-db.on('error', logger.error.bind(logger, '[Mongodb] connection error'));
-db.once('open', () => {
-  logger.info('[Mongodb] Connected successfully');
-});
-const app = express();
+const setup = async () => {
+  mongoose.connect(config.mongoUrl);
+  const db = mongoose.connection;
+  db.on('error', logger.error.bind(logger, '[Mongodb] connection error'));
+  db.once('open', () => {
+    logger.info('[Mongodb] Connected successfully');
+  });
+  const app = express();
 
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+  app.use(morgan('dev'));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use(cookieParser());
 
-const corsOptions = {
-  origin: process.env.CORS_ORIGIN,
-  optionsSuccessStatus: 200,
+  const corsOptions = {
+    origin: process.env.CORS_ORIGIN,
+    optionsSuccessStatus: 200,
+  };
+
+  app.use(cors(corsOptions));
+  app.use(verifyNearSignatureHeader);
+
+  app.use('/grants', grantApplicationRoutes);
+
+  app.use((req, res, next) => {
+    next(createError(404));
+  });
+
+  app.use((err, req, res) => {
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');
+  });
+
+  return app;
 };
 
-app.use(cors(corsOptions));
-app.use(verifyNearSignatureHeader);
-
-app.use('/grants', grantApplicationRoutes);
-
-app.use((req, res, next) => {
-  next(createError(404));
-});
-
-app.use((err, req, res) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
-});
-
-module.exports = app;
+module.exports = setup;
