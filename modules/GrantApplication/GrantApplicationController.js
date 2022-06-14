@@ -10,17 +10,25 @@ module.exports = {
   /**
    * GrantApplicationController.list()
    */
-  list(req, res) {
-    GrantapplicationModel.find((err, GrantApplications) => {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting GrantApplication.',
-          error: err,
+  async list(req, res) {
+    try {
+      const grantApplications = await GrantapplicationModel.find({});
+
+      if (grantApplications.length === 0) {
+        const grantApplication = new GrantapplicationModel({
+          nearId: 't3st.testnet',
         });
+        await grantApplication.save();
+
+        return res.json([grantApplication]);
       }
 
-      return res.json(GrantApplications);
-    });
+      return res.json(grantApplications);
+    } catch (err) {
+      return res.status(500).json({
+        message: err.message,
+      });
+    }
   },
 
   /**
