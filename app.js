@@ -17,7 +17,7 @@ db.once('open', () => {
   logger.info('[Mongodb] Connected successfully');
 });
 
-const indexRouter = require('./routes/index');
+const grantApplicationRoutes = require('./modules/GrantApplication/GrantApplicationRoutes');
 
 const app = express();
 
@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/grants', grantApplicationRoutes);
 
 app.use((req, res, next) => {
   next(createError(404));

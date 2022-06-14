@@ -14,6 +14,7 @@
 - Package manager: **[NPM](https://www.npmjs.com/)**
 - Application framework: **[ExpressJS](https://expressjs.com/)**
 - Code quality: **[Eslint](https://eslint.org/), [Prettier](https://prettier.io/)**
+- Database: **[MongoDB](https://www.mongodb.com/)**
 
 ## Guides
 
@@ -35,6 +36,7 @@ Set up .env
 ### Development
 
 ```bash
+# run mongodb
 npm run dev
 ```
 
