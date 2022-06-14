@@ -7,9 +7,11 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const setUpNear = require('./utilities/setUpNear');
 const verifyNearSignatureHeader = require('./middlewares/verifyNearSignatureHeader');
 const logger = require('./utilities/logger');
 const config = require('./config/app');
+const near = require('./middlewares/near');
 
 const grantApplicationRoutes = require('./modules/GrantApplication/GrantApplicationRoutes');
 
@@ -22,6 +24,8 @@ const setup = async () => {
   });
   const app = express();
 
+  const nearApi = await setUpNear();
+
   app.use(morgan('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
@@ -32,6 +36,7 @@ const setup = async () => {
     optionsSuccessStatus: 200,
   };
 
+  app.use(near(nearApi));
   app.use(cors(corsOptions));
   app.use(verifyNearSignatureHeader);
 
