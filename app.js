@@ -7,8 +7,11 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const verifyNearSignatureHeader = require('./middlewares/verifyNearSignatureHeader');
 const logger = require('./utilities/logger');
 const config = require('./config/app');
+
+const grantApplicationRoutes = require('./modules/GrantApplication/GrantApplicationRoutes');
 
 mongoose.connect(config.mongoUrl);
 const db = mongoose.connection;
@@ -16,9 +19,6 @@ db.on('error', logger.error.bind(logger, '[Mongodb] connection error'));
 db.once('open', () => {
   logger.info('[Mongodb] Connected successfully');
 });
-
-const grantApplicationRoutes = require('./modules/GrantApplication/GrantApplicationRoutes');
-
 const app = express();
 
 app.use(morgan('dev'));
@@ -32,6 +32,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
+app.use(verifyNearSignatureHeader);
 
 app.use('/grants', grantApplicationRoutes);
 
