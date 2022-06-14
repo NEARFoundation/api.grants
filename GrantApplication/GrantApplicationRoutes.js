@@ -1,7 +1,7 @@
 const express = require('express');
 
 const router = express.Router();
-const GrantApplicationController = require('./GrantApplicationController.js');
+const GrantApplicationController = require('./GrantApplicationController');
 
 /*
  * GET

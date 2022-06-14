@@ -1,4 +1,5 @@
-const GrantapplicationModel = require('./GrantApplicationModel.js');
+/* eslint-disable no-param-reassign */
+const GrantapplicationModel = require('./GrantApplicationModel');
 
 /**
  * GrantApplicationController.js
@@ -9,7 +10,7 @@ module.exports = {
   /**
    * GrantApplicationController.list()
    */
-  list (req, res) {
+  list(req, res) {
     GrantapplicationModel.find((err, GrantApplications) => {
       if (err) {
         return res.status(500).json({
@@ -25,8 +26,8 @@ module.exports = {
   /**
    * GrantApplicationController.show()
    */
-  show (req, res) {
-    const {id} = req.params;
+  show(req, res) {
+    const { id } = req.params;
 
     GrantapplicationModel.findOne({ _id: id }, (err, GrantApplication) => {
       if (err) {
@@ -49,7 +50,8 @@ module.exports = {
   /**
    * GrantApplicationController.create()
    */
-  create (req, res) {
+  // eslint-disable-next-line max-lines-per-function
+  create(req, res) {
     const GrantApplication = new GrantapplicationModel({
       nearId: req.body.nearId,
       firstname: req.body.firstname,
@@ -120,7 +122,7 @@ module.exports = {
       payments: req.body.payments,
     });
 
-    GrantApplication.save((err, GrantApplication) => {
+    GrantApplication.save((err) => {
       if (err) {
         return res.status(500).json({
           message: 'Error when creating GrantApplication',
@@ -135,9 +137,11 @@ module.exports = {
   /**
    * GrantApplicationController.update()
    */
-  update (req, res) {
-    const {id} = req.params;
+  // eslint-disable-next-line max-lines-per-function
+  update(req, res) {
+    const { id } = req.params;
 
+    // eslint-disable-next-line max-lines-per-function, consistent-return
     GrantapplicationModel.findOne({ _id: id }, (err, GrantApplication) => {
       if (err) {
         return res.status(500).json({
@@ -224,7 +228,7 @@ module.exports = {
       GrantApplication.milestones = req.body.milestones ? req.body.milestones : GrantApplication.milestones;
       GrantApplication.payments = req.body.payments ? req.body.payments : GrantApplication.payments;
 
-      GrantApplication.save((err, GrantApplication) => {
+      GrantApplication.save(() => {
         if (err) {
           return res.status(500).json({
             message: 'Error when updating GrantApplication.',
@@ -240,10 +244,10 @@ module.exports = {
   /**
    * GrantApplicationController.remove()
    */
-  remove (req, res) {
-    const {id} = req.params;
+  remove(req, res) {
+    const { id } = req.params;
 
-    GrantapplicationModel.findByIdAndRemove(id, (err, GrantApplication) => {
+    GrantapplicationModel.findByIdAndRemove(id, (err) => {
       if (err) {
         return res.status(500).json({
           message: 'Error when deleting the GrantApplication.',
