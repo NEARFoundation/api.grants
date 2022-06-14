@@ -138,7 +138,7 @@ module.exports = {
    * GrantApplicationController.update()
    */
   // eslint-disable-next-line max-lines-per-function
-  update(req, res) {
+  saveDraft(req, res) {
     const { id } = req.params;
 
     // eslint-disable-next-line max-lines-per-function, consistent-return
@@ -240,4 +240,6 @@ module.exports = {
       });
     });
   },
+
+  submit() {},
 };

@@ -4,18 +4,23 @@ const router = express.Router();
 const GrantApplicationController = require('./GrantApplicationController');
 
 /*
- * GET
+ * GET (Get the first or create if it does not exist)
  */
 router.get('/', GrantApplicationController.list);
 
 /*
- * GET
+ * GET (Get by ID)
  */
 router.get('/:id', GrantApplicationController.show);
 
 /*
- * PUT
+ * PUT (Save Draft)
  */
-router.put('/:id', GrantApplicationController.update);
+router.put('/:id', GrantApplicationController.saveDraft);
+
+/*
+ * POST (Submit)
+ */
+router.post('/:id', GrantApplicationController.submit);
 
 module.exports = router;
