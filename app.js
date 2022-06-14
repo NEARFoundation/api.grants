@@ -2,12 +2,12 @@ require('dotenv').config();
 
 const createError = require('http-errors');
 const express = require('express');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const logger = require('./utilities/logger');
+const cors = require('cors');
 
+const logger = require('./utilities/logger');
 const config = require('./config/app');
 
 mongoose.connect(config.mongoUrl);
@@ -25,7 +25,13 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
 
 app.use('/grants', grantApplicationRoutes);
 
