@@ -11,7 +11,7 @@ const setUpNear = async () => {
 
   const setup = {
     near: await nearApi.connect(nearConfig),
-    verifySignature: keyPair.verify,
+    keyPair,
   };
 
   return setup;
