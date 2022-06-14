@@ -14,18 +14,8 @@ router.get('/', GrantApplicationController.list);
 router.get('/:id', GrantApplicationController.show);
 
 /*
- * POST
- */
-router.post('/', GrantApplicationController.create);
-
-/*
  * PUT
  */
 router.put('/:id', GrantApplicationController.update);
-
-/*
- * DELETE
- */
-router.delete('/:id', GrantApplicationController.remove);
 
 module.exports = router;

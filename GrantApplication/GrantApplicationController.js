@@ -240,22 +240,4 @@ module.exports = {
       });
     });
   },
-
-  /**
-   * GrantApplicationController.remove()
-   */
-  remove(req, res) {
-    const { id } = req.params;
-
-    GrantapplicationModel.findByIdAndRemove(id, (err) => {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when deleting the GrantApplication.',
-          error: err,
-        });
-      }
-
-      return res.status(204).json();
-    });
-  },
 };
