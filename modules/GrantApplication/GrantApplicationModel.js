@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const { Schema } = mongoose;
 
@@ -99,5 +100,7 @@ const GrantApplicationSchema = new Schema(
   },
   { timestamps: true },
 );
+
+GrantApplicationSchema.plugin(AutoIncrement, { inc_field: 'id' });
 
 module.exports = mongoose.model('GrantApplication', GrantApplicationSchema);

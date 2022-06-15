@@ -23,6 +23,7 @@ const verifyNearSignatureHeader = async (req, res, next) => {
     const publicKey = nearApi.utils.key_pair.PublicKey.from(accessKey.public_key);
 
     if (publicKey.verify(message, signature)) {
+      req.near.accountId = accountId;
       next();
       return;
     }

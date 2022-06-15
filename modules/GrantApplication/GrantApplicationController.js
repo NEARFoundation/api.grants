@@ -12,11 +12,15 @@ module.exports = {
    */
   async list(req, res) {
     try {
-      const grantApplications = await GrantapplicationModel.find({});
+      const grantApplications = await GrantapplicationModel.find({
+        nearId: req.near.accountId,
+      });
+
+      console.log(grantApplications);
 
       if (grantApplications.length === 0) {
         const grantApplication = new GrantapplicationModel({
-          nearId: 't3st.testnet',
+          nearId: req.near.accountId,
         });
         await grantApplication.save();
 
