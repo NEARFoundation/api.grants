@@ -14,9 +14,11 @@ module.exports = {
     try {
       const grantApplications = await GrantapplicationModel.find({
         nearId: req.near.accountId,
+      }).select({
+        _id: 1,
+        id: 1,
+        nearId: 1,
       });
-
-      console.log(grantApplications);
 
       if (grantApplications.length === 0) {
         const grantApplication = new GrantapplicationModel({
