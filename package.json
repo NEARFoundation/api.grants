@@ -19,7 +19,8 @@
     "mongoose-sequence": "^5.3.1",
     "morgan": "~1.9.1",
     "near-api-js": "^0.45.1",
-    "winston": "^3.7.2"
+    "winston": "^3.7.2",
+    "zod": "^3.17.3"
   },
   "devDependencies": {
     "eslint": "^8.17.0",

@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 const GrantApplicationModel = require('./GrantApplicationModel');
 const getVerifyAndSaveGrantData = require('../../utilities/getVerifyAndSaveGrantData');
+const createSchema = require('./GrantApplicationFormSchema');
 
 /**
  * GrantApplicationController.js
@@ -90,13 +91,19 @@ module.exports = {
    */
   async submit(req, res) {
     try {
-      // validate with zod
       const grantApplication = await getVerifyAndSaveGrantData(req, res);
-      grantApplication.dateSubmission = new Date();
+
+      const grantValidationSchema = createSchema();
+      const result = grantValidationSchema.parse(req.body.grantData);
+
+      console.log(result);
+
+      // grantApplication.dateSubmission = new Date();
       await grantApplication.save();
 
       return res.json(grantApplication);
     } catch (error) {
+      console.log(error);
       return res.status(500).json({
         message: 'Error when updating grantApplication.',
         error,
