@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 const GrantApplicationModel = require('./GrantApplicationModel');
-const verifySignatureOfObject = require('./../../utilities/verifySignatureOfObject');
+const verifySignatureOfObject = require("../../utilities/verifySignatureOfObject");
 
 /**
  * GrantApplicationController.js
@@ -144,6 +144,7 @@ module.exports = {
       grantApplication.referral = grantData.referral ? grantData.referral : grantApplication.referral;
       grantApplication.teamReferral = grantData.teamReferral ? grantData.teamReferral : grantApplication.teamReferral;
       grantApplication.comments = grantData.comments ? grantData.comments : grantApplication.comments;
+      grantApplication.milestones = grantData.milestones ? grantData.milestones : grantApplication.milestones;
       grantApplication.dateLastDraftSaving = new Date();
 
       await grantApplication.save();

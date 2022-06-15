@@ -76,6 +76,7 @@ const GrantApplicationSchema = new Schema(
     reviewAttachments: String,
     milestones: [
       {
+        budget: Number,
         deliveryDate: Date,
         description: String,
         reviewMilestone: String,
