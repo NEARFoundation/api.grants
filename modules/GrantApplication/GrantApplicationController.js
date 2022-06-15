@@ -12,8 +12,10 @@ module.exports = {
    */
   async list(req, res) {
     try {
+      const { accountId: nearId } = req.near;
+
       const grantApplications = await GrantapplicationModel.find({
-        nearId: req.near.accountId,
+        nearId,
       }).select({
         _id: 1,
         id: 1,
@@ -40,25 +42,28 @@ module.exports = {
   /**
    * GrantApplicationController.show()
    */
-  show(req, res) {
-    const { id } = req.params;
+  async show(req, res) {
+    try {
+      const { id } = req.params;
+      const { accountId: nearId } = req.near;
 
-    GrantapplicationModel.findOne({ _id: id }, (err, GrantApplication) => {
-      if (err) {
-        return res.status(500).json({
-          message: 'Error when getting GrantApplication.',
-          error: err,
-        });
-      }
+      const grantApplication = await GrantapplicationModel.findOne({
+        id,
+        nearId,
+      });
 
-      if (!GrantApplication) {
+      if (!grantApplication) {
         return res.status(404).json({
-          message: 'No such GrantApplication',
+          message: 'No such GrantApplication under this near account',
         });
       }
 
-      return res.json(GrantApplication);
-    });
+      return res.json(grantApplication);
+    } catch (err) {
+      return res.status(500).json({
+        message: err.message,
+      });
+    }
   },
 
   /**
