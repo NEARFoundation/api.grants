@@ -94,7 +94,7 @@ module.exports = {
       const grantApplication = await getVerifyAndSaveGrantData(req, res);
 
       const grantValidationSchema = createSchema();
-      const result = grantValidationSchema.parse(req.body.grantData);
+      const result = grantValidationSchema.safeParse(req.body.grantData);
 
       console.log(result);
 
