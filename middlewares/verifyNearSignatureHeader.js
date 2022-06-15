@@ -1,6 +1,8 @@
+/* eslint-disable no-restricted-syntax */
 const { sha256 } = require('js-sha256');
+const nearApi = require('near-api-js');
 
-const verifyNearSignatureHeader = (req, res, next) => {
+const verifyNearSignatureHeader = async (req, res, next) => {
   if (!req.near) {
     throw new Error('verifyNearSignatureHeader middleware should be used after the near middleware');
   }
@@ -13,15 +15,20 @@ const verifyNearSignatureHeader = (req, res, next) => {
   const signature = new Uint8Array(signatureArray);
   const message = new Uint8Array(sha256.array(accountId));
 
-  const { keyPair } = req.near;
-  console.log(message);
-  console.log(signature);
+  const { near } = req.near;
+  const account = await near.account(accountId);
+  const accessKeys = await account.getAccessKeys();
 
-  const isSignatureValid = keyPair.verify(message, signature);
+  for (const accessKey of accessKeys) {
+    const publicKey = nearApi.utils.key_pair.PublicKey.from(accessKey.public_key);
 
-  console.log('isSignatureValid', isSignatureValid);
+    if (publicKey.verify(message, signature)) {
+      next();
+      return;
+    }
+  }
 
-  next();
+  res.status(401).send('Unauthorized');
 };
 
 module.exports = verifyNearSignatureHeader;
