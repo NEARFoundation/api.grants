@@ -96,13 +96,28 @@ module.exports = {
       const grantValidationSchema = createSchema();
       const result = grantValidationSchema.safeParse(req.body.grantData);
 
-      console.log(result);
+      const errors = result.error.issues;
+
+      if (errors.length > 0) {
+        const parsedErrors = {};
+
+        errors.forEach((error) => {
+          const path = error.path.join('.');
+          parsedErrors[path] = error.message;
+        });
+
+        return res.status(400).json({
+          message: 'Invalid grant data',
+          errors: parsedErrors,
+        });
+      }
 
       // grantApplication.dateSubmission = new Date();
       await grantApplication.save();
 
       return res.json(grantApplication);
     } catch (error) {
+      console.log('EROOOOOOR');
       console.log(error);
       return res.status(500).json({
         message: 'Error when updating grantApplication.',
