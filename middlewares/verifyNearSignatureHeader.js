@@ -29,7 +29,7 @@ const verifyNearSignatureHeader = async (req, res, next) => {
     }
   }
 
-  res.status(401).send('Unauthorized');
+  res.status(403).send('Forbidden');
 };
 
 module.exports = verifyNearSignatureHeader;

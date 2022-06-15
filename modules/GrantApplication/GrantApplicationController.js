@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 const GrantApplicationModel = require('./GrantApplicationModel');
+const verifySignatureOfObject = require('./../../utilities/verifySignatureOfObject');
 
 /**
  * GrantApplicationController.js
@@ -73,7 +74,7 @@ module.exports = {
   async saveDraft(req, res) {
     try {
       const { id } = req.params;
-      const { accountId: nearId } = req.near;
+      const { accountId: nearId, near } = req.near;
 
       const grantApplication = await GrantApplicationModel.findOne({
         id,
@@ -92,7 +93,15 @@ module.exports = {
         });
       }
 
-      const { grantData } = req.body;
+      const { grantData, signedGrantData } = req.body;
+
+      const isSignatureValid = await verifySignatureOfObject(signedGrantData, grantData, nearId, near);
+
+      if (!isSignatureValid) {
+        return res.status(403).json({
+          message: 'Invalid signature',
+        });
+      }
 
       grantApplication.firstname = grantData.firstname ? grantData.firstname : grantApplication.firstname;
       grantApplication.lastname = grantData.lastname ? grantData.lastname : grantApplication.lastname;
