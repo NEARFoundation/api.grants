@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 const GrantApplicationModel = require('./GrantApplicationModel');
-const verifySignatureOfObject = require("../../utilities/verifySignatureOfObject");
+const verifySignatureOfObject = require('../../utilities/verifySignatureOfObject');
 
 /**
  * GrantApplicationController.js
@@ -151,7 +151,6 @@ module.exports = {
 
       return res.json(grantApplication);
     } catch (error) {
-      console.log(error);
       return res.status(500).json({
         message: 'Error when updating grantApplication.',
         error,
