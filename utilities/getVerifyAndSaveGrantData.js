@@ -29,7 +29,7 @@ const getVerifyAndSaveGrantData = async (req, res) => {
     const isSignatureValid = await verifySignatureOfObject(signedGrantData, grantData, nearId, near);
 
     if (!isSignatureValid) {
-      return res.status(403).json({
+      return res.status(401).json({
         message: 'Invalid signature',
       });
     }
