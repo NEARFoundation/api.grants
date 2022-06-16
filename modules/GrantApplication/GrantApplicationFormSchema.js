@@ -7,10 +7,8 @@
 
 const { z } = require('zod');
 
-const t = (text) => `#i18n-t#:${text}`;
-
 // eslint-disable-next-line max-lines-per-function
-const createSchema = () =>
+const createSchema = (t) =>
   z.object({
     projectName: z.string().min(1, { message: t('form.projectName.error') }),
     grantType: z.enum(['equity', 'non-equity'], {

@@ -93,7 +93,8 @@ module.exports = {
     try {
       const grantApplication = await getVerifyAndSaveGrantData(req, res);
 
-      const grantValidationSchema = createSchema();
+      // eslint-disable-next-line no-underscore-dangle
+      const grantValidationSchema = createSchema(req.__);
       const result = grantValidationSchema.safeParse(req.body.grantData);
 
       const errors = result.error.issues;

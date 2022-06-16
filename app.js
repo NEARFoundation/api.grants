@@ -6,6 +6,8 @@ const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const i18n = require('i18n');
+const path = require('path');
 
 const setUpNear = require('./utilities/setUpNear');
 const verifyNearSignatureHeader = require('./middlewares/verifyNearSignatureHeader');
@@ -21,6 +23,11 @@ const corsOptions = {
   origin: process.env.CORS_ORIGIN,
   optionsSuccessStatus: 200,
 };
+i18n.configure({
+  locales: ['en'],
+  directory: path.join(__dirname, 'locales'),
+  objectNotation: true,
+});
 
 const setup = async () => {
   const app = express();
@@ -44,6 +51,7 @@ const setup = async () => {
   app.use(near(nearApi));
   app.use(cors(corsOptions));
   app.use(verifyNearSignatureHeader);
+  app.use(i18n.init);
 
   // Set up routes
   app.use('/grants', grantApplicationRoutes);
