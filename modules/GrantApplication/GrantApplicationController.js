@@ -2,6 +2,7 @@
 const GrantApplicationModel = require('./GrantApplicationModel');
 const getVerifyAndSaveGrantData = require('../../utilities/getVerifyAndSaveGrantData');
 const createSchema = require('./GrantApplicationFormSchema');
+const grantConfig = require('../../config/grant');
 
 /**
  * GrantApplicationController.js
@@ -114,12 +115,15 @@ module.exports = {
       }
 
       grantApplication.dateSubmission = new Date();
+
+      if (grantConfig.skipOnboarding) {
+        grantApplication.dateEvaluation = new Date();
+      }
+
       await grantApplication.save();
 
       return res.json(grantApplication);
     } catch (error) {
-      console.log('EROOOOOOR');
-      console.log(error);
       return res.status(500).json({
         message: 'Error when updating grantApplication.',
         error,
