@@ -13,39 +13,45 @@ const logger = require('./utilities/logger');
 const config = require('./config/app');
 const near = require('./middlewares/near');
 
+// Routes
 const grantApplicationRoutes = require('./modules/GrantApplication/GrantApplicationRoutes');
 
+// Options
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN,
+  optionsSuccessStatus: 200,
+};
+
 const setup = async () => {
+  const app = express();
+
+  // Set up mongodb
   mongoose.connect(config.mongoUrl);
   const db = mongoose.connection;
   db.on('error', logger.error.bind(logger, '[Mongodb] connection error'));
   db.once('open', () => {
     logger.info('[Mongodb] Connected successfully');
   });
-  const app = express();
 
+  // Set up NEAR
   const nearApi = await setUpNear();
 
+  // Set up middlewares
   app.use(morgan('dev'));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser());
-
-  const corsOptions = {
-    origin: process.env.CORS_ORIGIN,
-    optionsSuccessStatus: 200,
-  };
-
   app.use(near(nearApi));
   app.use(cors(corsOptions));
   app.use(verifyNearSignatureHeader);
 
+  // Set up routes
   app.use('/grants', grantApplicationRoutes);
 
+  // Set up error catching
   app.use((req, res, next) => {
     next(createError(404));
   });
-
   app.use((err, req, res) => {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
