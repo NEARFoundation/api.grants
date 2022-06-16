@@ -28,6 +28,7 @@ module.exports = {
       if (grantApplications.length === 0) {
         const grantApplication = new GrantApplicationModel({
           nearId: req.near.accountId,
+          currency: grantConfig.defaultCurrency,
         });
         await grantApplication.save();
 
