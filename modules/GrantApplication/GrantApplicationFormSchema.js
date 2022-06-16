@@ -3,9 +3,18 @@
     Where z.nativeEnum has been replaced by z.enum
     And where types has been removed and t has been mocked
     ES6 import/export replaced by CommonJS require/module.exports
+    Adding preprocess for dates
 */
 
 const { z } = require('zod');
+
+const preprocessDate = (arg) => {
+  if (typeof arg === 'string' || arg instanceof Date) {
+    return new Date(arg);
+  }
+
+  return arg;
+};
 
 // eslint-disable-next-line max-lines-per-function
 const createSchema = (t) =>
@@ -22,7 +31,7 @@ const createSchema = (t) =>
     projectStatus: z.enum(['mvp', 'pre-alpha', 'alpha', 'beta', 'live'], {
       errorMap: () => ({ message: t('form.projectStatus.error') }),
     }),
-    projectLaunchDate: z.date({ required_error: t('form.projectLaunchDate.error'), invalid_type_error: t('form.projectLaunchDate.error') }),
+    projectLaunchDate: z.preprocess(preprocessDate, z.date({ required_error: t('form.projectLaunchDate.error'), invalid_type_error: t('form.projectLaunchDate.error') })),
     projectDescription: z
       .string({ required_error: t('form.projectDescription.error') })
       .min(1, { message: t('form.projectDescription.error') })
@@ -35,7 +44,7 @@ const createSchema = (t) =>
     milestones: z.array(
       z.object({
         budget: z.number({ invalid_type_error: t('form.budget.error'), required_error: t('form.budget.error') }).min(1, { message: t('form.budget.error') }),
-        deliveryDate: z.date({ invalid_type_error: t('form.deliveryDate.error'), required_error: t('form.deliveryDate.error') }),
+        deliveryDate: z.preprocess(preprocessDate, z.date({ invalid_type_error: t('form.deliveryDate.error'), required_error: t('form.deliveryDate.error') })),
         description: z
           .string({ required_error: t('form.description.error') })
           .min(1, { message: t('form.description.error') })
@@ -77,7 +86,7 @@ const createSchema = (t) =>
 
     firstname: z.string({ required_error: t('form.firstname.error') }).min(1, { message: t('form.firstname.error') }),
     lastname: z.string({ required_error: t('form.lastname.error') }).min(1, { message: t('form.lastname.error') }),
-    dateOfBirth: z.date({ required_error: t('form.dateOfBirth.error'), invalid_type_error: t('form.dateOfBirth.error') }),
+    dateOfBirth: z.preprocess(preprocessDate, z.date({ required_error: t('form.dateOfBirth.error'), invalid_type_error: t('form.dateOfBirth.error') })),
     email: z.string({ required_error: t('form.email.error') }).email({ message: t('form.email.error') }),
     github: z.string().optional(),
     twitter: z.string().optional(),

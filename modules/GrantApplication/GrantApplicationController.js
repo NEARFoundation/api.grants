@@ -97,7 +97,7 @@ module.exports = {
       const grantValidationSchema = createSchema(req.__);
       const result = grantValidationSchema.safeParse(req.body.grantData);
 
-      const errors = result.error.issues;
+      const errors = (result && result.error && result.error.issues) || [];
 
       if (errors.length > 0) {
         const parsedErrors = {};
@@ -113,7 +113,7 @@ module.exports = {
         });
       }
 
-      // grantApplication.dateSubmission = new Date();
+      grantApplication.dateSubmission = new Date();
       await grantApplication.save();
 
       return res.json(grantApplication);
