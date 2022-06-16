@@ -54,7 +54,7 @@ const setup = async () => {
   app.use(i18n.init);
 
   // Set up routes
-  app.use('/grants', grantApplicationRoutes);
+  app.use('/api/v1/grants', grantApplicationRoutes);
 
   // Set up error catching
   app.use((req, res, next) => {
