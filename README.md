@@ -24,7 +24,7 @@
 cp .env.dist .env
 # 1. set up variables on .env
 
-# 2. add contract agreement file to `templates/agreement.pdf`
+# 2. add contract agreement template file to `templates/agreement.pdf`
 ```
 
 ### Installation

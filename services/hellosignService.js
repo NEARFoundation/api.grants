@@ -7,7 +7,7 @@ const options = {
   clientId: config.appClientKey,
   subject: config.subject,
   message: config.message,
-  files: [config.filePath],
+  files: [config.templatePath],
 };
 
 module.exports = {
@@ -25,7 +25,8 @@ module.exports = {
 
       const signature = signatureRequest.signature_request.signatures[0];
       const helloSignRequestId = signature.signature_id;
-      const helloSignRequestUrl = hellosign.embedded.getSignUrl(helloSignRequestId);
+      const helloSignUrlRequest = await hellosign.embedded.getSignUrl(helloSignRequestId);
+      const helloSignRequestUrl = helloSignUrlRequest.embedded.sign_url;
 
       return {
         helloSignRequestId,
