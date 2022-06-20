@@ -22,7 +22,9 @@
 
 ```bash
 cp .env.dist .env
-# set up variables on .env
+# 1. set up variables on .env
+
+# 2. add contract agreement file to `templates/agreement.pdf`
 ```
 
 ### Installation
