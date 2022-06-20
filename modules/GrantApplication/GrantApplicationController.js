@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 const GrantApplicationModel = require('./GrantApplicationModel');
 const getVerifyAndSaveGrantData = require('../../utilities/getVerifyAndSaveGrantData');
+const getGrant = require('../../utilities/getGrant');
 const createSchema = require('./GrantApplicationFormSchema');
 const grantConfig = require('../../config/grant');
 
@@ -48,20 +49,7 @@ module.exports = {
    */
   async show(req, res) {
     try {
-      const { id } = req.params;
-      const { accountId: nearId } = req.near;
-
-      const grantApplication = await GrantApplicationModel.findOne({
-        id,
-        nearId,
-      });
-
-      if (!grantApplication) {
-        return res.status(404).json({
-          message: 'No such GrantApplication under this near account',
-        });
-      }
-
+      const grantApplication = await getGrant(req, res);
       return res.json(grantApplication);
     } catch (err) {
       return res.status(500).json({
@@ -134,6 +122,7 @@ module.exports = {
 
   async setInterview(req, res) {
     try {
+      const { calendlyUrl, signedCalendlyUrl } = req.body;
     } catch (error) {
       return res.status(500).json({
         message: 'Error when updating grantApplication',
