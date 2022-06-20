@@ -18,6 +18,9 @@ const getGrant = async (req, res) => {
       });
     }
 
+    const { firstname, lastname, email } = grantApplication;
+    const fullname = `${firstname} ${lastname}`;
+
     if (grantApplication.interviewUrl && !grantApplication.dateInterviewCompletionConfirmation) {
       const dateInterview = await calendlyService.getEventDate(grantApplication.interviewUrl);
       grantApplication.dateInterview = dateInterview;
@@ -25,7 +28,7 @@ const getGrant = async (req, res) => {
     }
 
     if (grantApplication.dateKycApproved && grantApplication.dateApproval && !grantApplication.helloSignRequestId) {
-      const { helloSignRequestId, helloSignRequestUrl } = await hellosignService.createSignatureRequest();
+      const { helloSignRequestId, helloSignRequestUrl } = await hellosignService.createSignatureRequest(email, fullname);
       grantApplication.helloSignRequestId = helloSignRequestId;
       grantApplication.helloSignRequestUrl = helloSignRequestUrl;
       await grantApplication.save();
