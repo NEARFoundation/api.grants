@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 const GrantApplicationModel = require('./GrantApplicationModel');
 const getVerifyAndSaveGrantData = require('../../utilities/getVerifyAndSaveGrantData');
+const verifySignatureOfString = require('../../utilities/verifySignatureOfString');
 const getGrant = require('../../utilities/getGrant');
 const createSchema = require('./GrantApplicationFormSchema');
 const grantConfig = require('../../config/grant');
@@ -123,6 +124,7 @@ module.exports = {
   async setInterview(req, res) {
     try {
       const grantApplication = await getGrant(req, res);
+      const { accountId, near } = req.near;
 
       if (grantApplication.interviewUrl) {
         return res.status(400).json({
@@ -137,6 +139,21 @@ module.exports = {
       }
 
       const { calendlyUrl, signedCalendlyUrl } = req.body;
+      const isSignatureValid = await verifySignatureOfString(signedCalendlyUrl, calendlyUrl, accountId, near);
+
+      if (!isSignatureValid) {
+        return res.status(400).json({
+          message: 'Invalid signature',
+        });
+      }
+
+      grantApplication.interviewUrl = calendlyUrl;
+      grantApplication.dateInterviewScheduled = new Date();
+      grantApplication.dateInterview = 'todo';
+
+      await grantApplication.save();
+
+      return res.json(grantApplication);
     } catch (error) {
       return res.status(500).json({
         message: 'Error when updating grantApplication',
