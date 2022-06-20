@@ -23,4 +23,9 @@ router.put('/:id', GrantApplicationController.saveDraft);
  */
 router.post('/:id', GrantApplicationController.submit);
 
+/*
+ * PUT (Set calendar interview url and date)
+ */
+router.put('/:id/calendly/interview', GrantApplicationController.setInterview);
+
 module.exports = router;

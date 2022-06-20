@@ -131,4 +131,14 @@ module.exports = {
       });
     }
   },
+
+  async setInterview(req, res) {
+    try {
+    } catch (error) {
+      return res.status(500).json({
+        message: 'Error when updating grantApplication',
+        error,
+      });
+    }
+  },
 };
