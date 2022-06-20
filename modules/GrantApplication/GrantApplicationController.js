@@ -122,6 +122,20 @@ module.exports = {
 
   async setInterview(req, res) {
     try {
+      const grantApplication = await getGrant(req, res);
+
+      if (grantApplication.interviewUrl) {
+        return res.status(400).json({
+          message: 'Interview already scheduled',
+        });
+      }
+
+      if (!grantApplication.dateSubmission && !grantApplication.dateEvaluation) {
+        return res.status(400).json({
+          message: 'Grant not submitted or not approved',
+        });
+      }
+
       const { calendlyUrl, signedCalendlyUrl } = req.body;
     } catch (error) {
       return res.status(500).json({
