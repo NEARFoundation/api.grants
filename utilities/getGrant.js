@@ -1,5 +1,6 @@
 const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicationModel');
 const calendlyService = require('../services/calendlyService');
+const hellosignService = require('../services/hellosignService');
 
 const getGrant = async (req, res) => {
   try {
@@ -24,6 +25,10 @@ const getGrant = async (req, res) => {
     }
 
     if (grantApplication.dateKycApproved && grantApplication.dateApproval && !grantApplication.helloSignRequestId) {
+      const { helloSignRequestId, helloSignRequestUrl } = await hellosignService.createSignatureRequest();
+      grantApplication.helloSignRequestId = helloSignRequestId;
+      grantApplication.helloSignRequestUrl = helloSignRequestUrl;
+      await grantApplication.save();
     }
 
     return grantApplication;

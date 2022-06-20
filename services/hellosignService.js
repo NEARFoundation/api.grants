@@ -33,7 +33,10 @@ module.exports = {
       };
     } catch (err) {
       console.log(err);
-      return null;
+      return {
+        helloSignRequestId: null,
+        helloSignRequestUrl: null,
+      };
     }
   },
 };
