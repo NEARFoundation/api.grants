@@ -23,6 +23,9 @@ const getGrant = async (req, res) => {
       await grantApplication.save();
     }
 
+    if (grantApplication.dateKycApproved && grantApplication.dateApproval && !grantApplication.helloSignRequestId) {
+    }
+
     return grantApplication;
   } catch (err) {
     return res.status(500).json({

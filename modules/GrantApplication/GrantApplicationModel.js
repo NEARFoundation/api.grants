@@ -67,6 +67,7 @@ const GrantApplicationSchema = new Schema(
     dateFirstPaymentSent: Date,
     dateOnboardingCompletion: Date,
     helloSignRequestId: String,
+    helloSignRequestUrl: String,
     interviewUrl: String,
     kycUrl: String,
     agreementUrl: String,

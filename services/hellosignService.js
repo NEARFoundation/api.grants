@@ -23,7 +23,14 @@ module.exports = {
         ],
       });
 
-      return signatureRequest;
+      const signature = signatureRequest.signature_request.signatures[0];
+      const helloSignRequestId = signature.signature_id;
+      const helloSignRequestUrl = hellosign.embedded.getSignUrl(helloSignRequestId);
+
+      return {
+        helloSignRequestId,
+        helloSignRequestUrl,
+      };
     } catch (err) {
       console.log(err);
       return null;
