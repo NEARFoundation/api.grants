@@ -1,9 +1,10 @@
 /* eslint-disable no-param-reassign */
 const GrantApplicationModel = require('./GrantApplicationModel');
+const createSchema = require('./GrantApplicationFormSchema');
+const calendlyService = require('../../services/calendlyService');
 const getVerifyAndSaveGrantData = require('../../utilities/getVerifyAndSaveGrantData');
 const verifySignatureOfString = require('../../utilities/verifySignatureOfString');
 const getGrant = require('../../utilities/getGrant');
-const createSchema = require('./GrantApplicationFormSchema');
 const grantConfig = require('../../config/grant');
 
 /**
@@ -149,7 +150,7 @@ module.exports = {
 
       grantApplication.interviewUrl = calendlyUrl;
       grantApplication.dateInterviewScheduled = new Date();
-      grantApplication.dateInterview = 'todo';
+      grantApplication.dateInterview = await calendlyService.getEventDate(grantApplication.interviewUrl);
 
       await grantApplication.save();
 

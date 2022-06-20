@@ -1,4 +1,5 @@
 const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicationModel');
+const calendlyService = require('../services/calendlyService');
 
 const getGrant = async (req, res) => {
   try {
@@ -14,6 +15,12 @@ const getGrant = async (req, res) => {
       return res.status(404).json({
         message: 'No such GrantApplication under this near account',
       });
+    }
+
+    if (grantApplication.interviewUrl && !grantApplication.dateInterviewCompletionConfirmation) {
+      const dateInterview = await calendlyService.getEventDate(grantApplication.interviewUrl);
+      grantApplication.dateInterview = dateInterview;
+      await grantApplication.save();
     }
 
     return grantApplication;
