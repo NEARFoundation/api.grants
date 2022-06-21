@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+const fs = require('fs');
 const GrantApplicationModel = require('./GrantApplicationModel');
 const createSchema = require('./GrantApplicationFormSchema');
 const calendlyService = require('../../services/calendlyService');
@@ -6,6 +7,7 @@ const getVerifyAndSaveGrantData = require('../../utilities/getVerifyAndSaveGrant
 const verifySignatureOfString = require('../../utilities/verifySignatureOfString');
 const getGrant = require('../../utilities/getGrant');
 const grantConfig = require('../../config/grant');
+const hellosignService = require('../../services/hellosignService');
 
 /**
  * GrantApplicationController.js
@@ -167,14 +169,19 @@ module.exports = {
     try {
       const grantApplication = await getGrant(req, res);
 
-      if (!grantApplication.dateAgreementSignature || !grantApplication.helloSignSignatureRequestId) {
+      if (!grantApplication.dateAgreementSignature || !grantApplication.helloSignRequestId) {
         return res.status(400).json({
           message: 'Agreement not signed',
         });
       }
 
-      return null;
+      const fileName = await hellosignService.downloadAgreement(grantApplication.helloSignRequestId);
+
+      return res.download(fileName, 'agreements.zip', () => {
+        fs.unlinkSync(fileName);
+      });
     } catch (error) {
+      console.log(error);
       return res.status(500).json({
         message: 'Error when downloading agreement',
         error,

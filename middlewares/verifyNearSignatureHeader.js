@@ -7,6 +7,10 @@ const verifyNearSignatureHeader = async (req, res, next) => {
     throw new Error('verifyNearSignatureHeader middleware should be used after the near middleware');
   }
 
+  if (!req.headers['x-near-account-id'] || !req.headers['x-near-signature']) {
+    return res.status(401).send('Unauthorized');
+  }
+
   const accountId = req.headers['x-near-account-id'];
   const signatureString = req.headers['x-near-signature'];
   const signatureObject = JSON.parse(signatureString);
@@ -24,12 +28,11 @@ const verifyNearSignatureHeader = async (req, res, next) => {
 
     if (publicKey.verify(message, signature)) {
       req.near.accountId = accountId;
-      next();
-      return;
+      return next();
     }
   }
 
-  res.status(401).send('Unauthorized');
+  return res.status(401).send('Unauthorized');
 };
 
 module.exports = verifyNearSignatureHeader;
