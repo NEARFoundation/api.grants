@@ -179,8 +179,9 @@ module.exports = {
       const file = await hellosignService.downloadAgreement(grantApplication.helloSignRequestId);
 
       const fileReadStream = fs.createReadStream(path.join(__dirname, '../..', 'agreements.zip'));
-      res.setHeader('Content-disposition', 'attachment; filename=YOUR_FILE.EXTENSION');
+      res.setHeader('Content-disposition', 'attachment; filename=agreements.zip');
       fileReadStream.pipe(res);
+
       return;
     } catch (error) {
       console.log(error);
