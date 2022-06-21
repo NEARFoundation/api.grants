@@ -1,4 +1,6 @@
 /* eslint-disable no-param-reassign */
+const fs = require('fs');
+const path = require('path');
 const GrantApplicationModel = require('./GrantApplicationModel');
 const createSchema = require('./GrantApplicationFormSchema');
 const calendlyService = require('../../services/calendlyService');
@@ -176,7 +178,10 @@ module.exports = {
 
       const file = await hellosignService.downloadAgreement(grantApplication.helloSignRequestId);
 
-      return res.write(file);
+      const fileReadStream = fs.createReadStream(path.join(__dirname, '../..', 'agreements.zip'));
+      res.setHeader('Content-disposition', 'attachment; filename=YOUR_FILE.EXTENSION');
+      fileReadStream.pipe(res);
+      return;
     } catch (error) {
       console.log(error);
       return res.status(500).json({
