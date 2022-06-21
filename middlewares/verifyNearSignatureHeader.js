@@ -3,13 +3,6 @@ const { sha256 } = require('js-sha256');
 const nearApi = require('near-api-js');
 
 const verifyNearSignatureHeader = async (req, res, next) => {
-  // temporary hack
-  req.near = {
-    accountId: 'sandoche.testnet',
-  };
-
-  return next();
-
   if (!req.near) {
     throw new Error('verifyNearSignatureHeader middleware should be used after the near middleware');
   }
@@ -35,8 +28,7 @@ const verifyNearSignatureHeader = async (req, res, next) => {
 
     if (publicKey.verify(message, signature)) {
       req.near.accountId = accountId;
-      next();
-      return;
+      return next();
     }
   }
 

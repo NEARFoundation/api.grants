@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 const fs = require('fs');
-const path = require('path');
 const GrantApplicationModel = require('./GrantApplicationModel');
 const createSchema = require('./GrantApplicationFormSchema');
 const calendlyService = require('../../services/calendlyService');
