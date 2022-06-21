@@ -176,13 +176,14 @@ module.exports = {
         });
       }
 
-      const file = await hellosignService.downloadAgreement(grantApplication.helloSignRequestId);
+      const fileName = await hellosignService.downloadAgreement(grantApplication.helloSignRequestId);
+      const fileReadStream = fs.createReadStream(path.join(__dirname, '../..', fileName));
 
-      const fileReadStream = fs.createReadStream(path.join(__dirname, '../..', 'agreements.zip'));
       res.setHeader('Content-disposition', 'attachment; filename=agreements.zip');
       fileReadStream.pipe(res);
 
-      return;
+      // fs.unlink(path.join(__dirname, '../..', fileName), () => {});
+      return res.status(200);
     } catch (error) {
       console.log(error);
       return res.status(500).json({

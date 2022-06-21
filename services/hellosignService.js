@@ -72,13 +72,15 @@ module.exports = {
     try {
       return new Promise((resolve) => {
         hellosign.signatureRequest.download(helloSignRequestId, { file_type: 'zip' }, (err, res) => {
-          const file = fs.createWriteStream('agreements.zip');
+          const fileName = `tmp/agreements-${Date.now()}-${Math.floor(Math.random() * 100000)}-${helloSignRequestId}.zip`;
+
+          const file = fs.createWriteStream(fileName);
 
           res.pipe(file);
 
           file.on('finish', () => {
             file.close();
-            resolve(file);
+            resolve(fileName);
           });
         });
       });
