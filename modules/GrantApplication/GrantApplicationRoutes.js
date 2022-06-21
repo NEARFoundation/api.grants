@@ -28,4 +28,9 @@ router.post('/:id', GrantApplicationController.submit);
  */
 router.put('/:id/calendly/interview', GrantApplicationController.setInterview);
 
+/*
+ * GET (Get by ID)
+ */
+router.get('/:id/agreement', GrantApplicationController.downloadAgreement);
+
 module.exports = router;

@@ -162,4 +162,23 @@ module.exports = {
       });
     }
   },
+
+  async downloadAgreement(req, res) {
+    try {
+      const grantApplication = await getGrant(req, res);
+
+      if (!grantApplication.dateAgreementSignature || !grantApplication.helloSignSignatureRequestId) {
+        return res.status(400).json({
+          message: 'Agreement not signed',
+        });
+      }
+
+      return null;
+    } catch (error) {
+      return res.status(500).json({
+        message: 'Error when downloading agreement',
+        error,
+      });
+    }
+  },
 };
