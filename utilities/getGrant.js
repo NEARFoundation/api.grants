@@ -27,6 +27,12 @@ const getGrant = async (req, res) => {
       await grantApplication.save();
     }
 
+    if (grantApplication.helloSignRequestId && !grantApplication.dateAgreementSignature) {
+      const { helloSignRequestUrl } = await hellosignService.getSignatureRequestUrl(grantApplication.helloSignRequestId);
+      grantApplication.helloSignRequestUrl = helloSignRequestUrl;
+      await grantApplication.save();
+    }
+
     if (grantApplication.dateKycApproved && grantApplication.dateApproval && !grantApplication.helloSignRequestId) {
       const { helloSignRequestId, helloSignRequestUrl } = await hellosignService.createSignatureRequest(email, fullname);
       grantApplication.helloSignRequestId = helloSignRequestId;

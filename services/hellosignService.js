@@ -25,8 +25,7 @@ module.exports = {
 
       const signature = signatureRequest.signature_request.signatures[0];
       const helloSignRequestId = signature.signature_id;
-      const helloSignUrlRequest = await hellosign.embedded.getSignUrl(helloSignRequestId);
-      const helloSignRequestUrl = helloSignUrlRequest.embedded.sign_url;
+      const helloSignRequestUrl = await this.getSignatureRequestUrl(helloSignRequestId);
 
       return {
         helloSignRequestId,
@@ -36,6 +35,21 @@ module.exports = {
       console.log(err);
       return {
         helloSignRequestId: null,
+        helloSignRequestUrl: null,
+      };
+    }
+  },
+  async getSignatureRequestUrl(helloSignRequestId) {
+    try {
+      const helloSignUrlRequest = await hellosign.embedded.getSignUrl(helloSignRequestId);
+      const helloSignRequestUrl = helloSignUrlRequest.embedded.sign_url;
+
+      return {
+        helloSignRequestUrl,
+      };
+    } catch (err) {
+      console.log(err);
+      return {
         helloSignRequestUrl: null,
       };
     }
