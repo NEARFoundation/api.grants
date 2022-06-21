@@ -1,3 +1,4 @@
+const fs = require('fs');
 const config = require('../config/hellosign');
 // eslint-disable-next-line import/order
 const hellosign = require('hellosign-sdk')({ key: config.apiKey });
@@ -65,6 +66,25 @@ module.exports = {
       return {
         isCompleted: false,
       };
+    }
+  },
+  async downloadAgreement(helloSignRequestId) {
+    try {
+      return new Promise((resolve) => {
+        hellosign.signatureRequest.download(helloSignRequestId, { file_type: 'zip' }, (err, res) => {
+          const file = fs.createWriteStream('agreements.zip');
+
+          res.pipe(file);
+
+          file.on('finish', () => {
+            file.close();
+            resolve(file);
+          });
+        });
+      });
+    } catch (err) {
+      console.log(err);
+      return null;
     }
   },
 };
