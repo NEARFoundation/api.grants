@@ -27,21 +27,25 @@ const getGrant = async (req, res) => {
       await grantApplication.save();
     }
 
-    if (grantApplication.helloSignRequestId && !grantApplication.dateAgreementSignature) {
+    if (grantApplication.helloSignSignatureRequestId && !grantApplication.dateAgreementSignature) {
       const { isCompleted } = await hellosignService.isRequestCompleted(grantApplication.helloSignRequestId);
-      console.log(isCompleted);
-
-      const helloSignRequestUrl = await hellosignService.getSignatureRequestUrl(grantApplication.helloSignRequestId);
-      if (helloSignRequestUrl) {
-        grantApplication.helloSignRequestUrl = helloSignRequestUrl;
+      if (isCompleted) {
+        grantApplication.dateAgreementSignature = new Date();
         await grantApplication.save();
+      } else {
+        const helloSignRequestUrl = await hellosignService.getSignatureRequestUrl(grantApplication.helloSignSignatureRequestId);
+        if (helloSignRequestUrl) {
+          grantApplication.helloSignRequestUrl = helloSignRequestUrl;
+          await grantApplication.save();
+        }
       }
     }
 
-    if (grantApplication.dateKycApproved && grantApplication.dateApproval && !grantApplication.helloSignRequestId) {
-      const { helloSignRequestId, helloSignRequestUrl } = await hellosignService.createSignatureRequest(email, fullname);
-      grantApplication.helloSignRequestId = helloSignRequestId;
+    if (grantApplication.dateKycApproved && grantApplication.dateApproval && !grantApplication.helloSignSignatureRequestId) {
+      const { helloSignRequestId, helloSignSignatureRequestId, helloSignRequestUrl } = await hellosignService.createSignatureRequest(email, fullname);
+      grantApplication.helloSignSignatureRequestId = helloSignSignatureRequestId;
       grantApplication.helloSignRequestUrl = helloSignRequestUrl;
+      grantApplication.helloSignRequestId = helloSignRequestId;
       await grantApplication.save();
     }
 

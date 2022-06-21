@@ -24,24 +24,27 @@ module.exports = {
       });
 
       const signature = signatureRequest.signature_request.signatures[0];
-      const helloSignRequestId = signature.signature_id;
-      const helloSignRequestUrl = await this.getSignatureRequestUrl(helloSignRequestId);
+      const helloSignRequestId = signatureRequest.signature_request.signature_request_id;
+      const helloSignSignatureRequestId = signature.signature_id;
+      const helloSignRequestUrl = await this.getSignatureRequestUrl(helloSignSignatureRequestId);
 
       return {
-        helloSignRequestId,
+        helloSignSignatureRequestId,
         helloSignRequestUrl,
+        helloSignRequestId,
       };
     } catch (err) {
       console.log(err);
       return {
-        helloSignRequestId: null,
+        helloSignSignatureRequestId: null,
         helloSignRequestUrl: null,
+        helloSignRequestId: null,
       };
     }
   },
-  async getSignatureRequestUrl(helloSignRequestId) {
+  async getSignatureRequestUrl(helloSignSignatureRequestId) {
     try {
-      const helloSignUrlRequest = await hellosign.embedded.getSignUrl(helloSignRequestId);
+      const helloSignUrlRequest = await hellosign.embedded.getSignUrl(helloSignSignatureRequestId);
       const helloSignRequestUrl = helloSignUrlRequest.embedded.sign_url;
 
       return helloSignRequestUrl;
@@ -52,16 +55,10 @@ module.exports = {
   },
   async isRequestCompleted(helloSignRequestId) {
     try {
-      console.log(helloSignRequestId);
       const signatureRequest = await hellosign.signatureRequest.get(helloSignRequestId);
 
-      console.log(signatureRequest);
-
-      // const signature = signatureRequest.signature_request.signatures[0];
-      // const isCompleted = signature.signed_at;
-
       return {
-        isCompleted: true,
+        isCompleted: signatureRequest.signature_request.is_complete,
       };
     } catch (err) {
       console.log(err);
