@@ -44,13 +44,29 @@ module.exports = {
       const helloSignUrlRequest = await hellosign.embedded.getSignUrl(helloSignRequestId);
       const helloSignRequestUrl = helloSignUrlRequest.embedded.sign_url;
 
+      return helloSignRequestUrl;
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  },
+  async isRequestCompleted(helloSignRequestId) {
+    try {
+      console.log(helloSignRequestId);
+      const signatureRequest = await hellosign.signatureRequest.get(helloSignRequestId);
+
+      console.log(signatureRequest);
+
+      // const signature = signatureRequest.signature_request.signatures[0];
+      // const isCompleted = signature.signed_at;
+
       return {
-        helloSignRequestUrl,
+        isCompleted: true,
       };
     } catch (err) {
       console.log(err);
       return {
-        helloSignRequestUrl: null,
+        isCompleted: false,
       };
     }
   },
