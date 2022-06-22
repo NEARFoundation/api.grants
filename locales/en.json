@@ -49,14 +49,14 @@
     "fundingAmount": {
       "label": "How much initial funding do you need?",
       "placeholder": "10000",
-      "error": "Please enter an initial funding amount that is at least 1 USD.",
-      "description": "Please specify the initial amount you are requesting in USD. Extra funding should be added as milestone. E.g. $50,000 * Grants will be given in USD value of NEAR tokens. (Benchmark: average grant <$50K USD)"
+      "error": "Please enter an initial funding amount that is at least 1 USN.",
+      "description": "Please specify the initial amount you are requesting in USN. Extra funding should be added as milestone. E.g. $50,000 * Grants will be given in USN value of NEAR tokens. (Benchmark: average grant <$50K USN)"
     },
     "milestoneTitle": "Milestone",
     "budget": {
       "label": "Estimated Budget",
       "placeholder": "10000",
-      "error": "Please enter a budget that is at least 1 USD."
+      "error": "Please enter a budget that is at least 1 USN."
     },
     "deliveryDate": {
       "label": "Estimated Delivery Date",
