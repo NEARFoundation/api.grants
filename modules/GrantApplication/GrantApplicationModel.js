@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
+const crypto = require('crypto');
 
 const { Schema } = mongoose;
 
@@ -100,10 +101,18 @@ const GrantApplicationSchema = new Schema(
         status: String,
       },
     ],
+    salt: { type: String, select: false },
   },
   { timestamps: true },
 );
 
 GrantApplicationSchema.plugin(AutoIncrement, { inc_field: 'id' });
+
+GrantApplicationSchema.pre('save', function save(next) {
+  if (!this.salt) {
+    this.salt = crypto.randomBytes(16).toString('hex');
+  }
+  next();
+});
 
 module.exports = mongoose.model('GrantApplication', GrantApplicationSchema);
