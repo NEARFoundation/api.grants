@@ -35,7 +35,6 @@ module.exports = {
         helloSignRequestId,
       };
     } catch (err) {
-      console.log(err);
       return {
         helloSignSignatureRequestId: null,
         helloSignRequestUrl: null,
@@ -50,7 +49,6 @@ module.exports = {
 
       return helloSignRequestUrl;
     } catch (err) {
-      console.log(err);
       return null;
     }
   },
@@ -62,7 +60,6 @@ module.exports = {
         isCompleted: signatureRequest.signature_request.is_complete,
       };
     } catch (err) {
-      console.log(err);
       return {
         isCompleted: false,
       };
@@ -85,7 +82,6 @@ module.exports = {
         });
       });
     } catch (err) {
-      console.log(err);
       return null;
     }
   },
