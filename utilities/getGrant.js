@@ -49,6 +49,12 @@ const getGrant = async (req, res) => {
       await grantApplication.save();
     }
 
+    if (grantApplication.dateAgreementSignature && !grantApplication.hashProposal) {
+      // create a simple hash function
+      // set up the hash of the proposal create a hashingFunction
+      // hash also the milestones using amount, payount number & salt
+    }
+
     return grantApplication;
   } catch (err) {
     return res.status(500).json({
