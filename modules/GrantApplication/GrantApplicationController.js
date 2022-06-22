@@ -177,7 +177,7 @@ module.exports = {
 
       const fileName = await hellosignService.downloadAgreement(grantApplication.helloSignRequestId);
 
-      return res.download(fileName, 'agreements.zip', () => {
+      return res.download(fileName, 'agreement.zip', () => {
         fs.unlinkSync(fileName);
       });
     } catch (error) {
