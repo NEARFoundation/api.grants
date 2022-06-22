@@ -77,6 +77,7 @@ const GrantApplicationSchema = new Schema(
     reviewProject: String,
     reviewMemberDetail: String,
     reviewAttachments: String,
+    hashProposal: String,
     milestones: [
       {
         budget: Number,
@@ -90,6 +91,7 @@ const GrantApplicationSchema = new Schema(
         dateInterviewScheduled: Date,
         dateRejection: Date,
         dateValidation: Date,
+        hashProposal: String,
       },
     ],
     payments: [
