@@ -33,4 +33,10 @@ router.put('/:id/calendly/interview', GrantApplicationController.setInterview);
  */
 router.get('/:id/agreement', GrantApplicationController.downloadAgreement);
 
+/*
+ * PUT (Validate and save transaction hash)
+ */
+router.put('/:id/near-transactions', GrantApplicationController.validateAndSaveTransactionHash);
+
+
 module.exports = router;

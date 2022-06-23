@@ -187,4 +187,15 @@ module.exports = {
       });
     }
   },
+
+  async validateAndSaveTransactionHash(req, res) {
+    try {
+
+    } catch (error) {
+      return res.status(500).json({
+        message: 'The transaction could not be validated',
+        error,
+      });
+    }
+  }
 };
