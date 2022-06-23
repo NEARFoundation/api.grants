@@ -8,6 +8,7 @@ const verifySignatureOfString = require('../../utilities/verifySignatureOfString
 const getGrant = require('../../utilities/getGrant');
 const grantConfig = require('../../config/grant');
 const hellosignService = require('../../services/hellosignService');
+const nearService = require('../../services/nearService')
 
 /**
  * GrantApplicationController.js
@@ -190,7 +191,32 @@ module.exports = {
 
   async validateAndSaveTransactionHash(req, res) {
     try {
+      const grantApplication = await getGrant(req, res);
 
+      if(grantApplication.proposalNearTransactionHash) {
+        return res.status(400).json({
+          message: 'Transaction already done on chain',
+          error,
+        });
+      }
+
+      const { proposalNearTransactionHash } = req.body
+
+      const isTransactionValid = await nearService.verifyTransaction(proposalNearTransactionHash, grantApplication, 0)
+
+      if(!isTransactionValid) {
+        return res.status(400).json({
+          message: 'Invalid transaction',
+          error,
+        });
+      }
+
+      grantApplication.proposalNearTransactionHash = proposalNearTransactionHash
+      grantApplication.isNearProposalValid = true
+
+      await grantApplication.save()
+
+      return res.json(grantApplication);
     } catch (error) {
       return res.status(500).json({
         message: 'The transaction could not be validated',
