@@ -1,6 +1,7 @@
 const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicationModel');
 const calendlyService = require('../services/calendlyService');
 const hellosignService = require('../services/hellosignService');
+const hashProposal = require('./hashProposal');
 
 const getGrant = async (req, res) => {
   try {
@@ -50,9 +51,17 @@ const getGrant = async (req, res) => {
     }
 
     if (grantApplication.dateAgreementSignature && !grantApplication.hashProposal) {
-      // create a simple hash function
-      // set up the hash of the proposal create a hashingFunction
-      // hash also the milestones using amount, payount number & salt
+      const { salt, nearId, fundingAmount } = grantApplication;
+      grantApplication.hashProposal = hashProposal(salt, nearId, fundingAmount, 0)
+
+      grantApplication.milestones.map((milestone, index) => {
+        const { budget } = milestone
+        const payoutNumber = index + 1
+        milestone.hashProposal = hashProposal(salt, nearId, budget, payoutNumber)
+        return milestone;
+      })
+
+      await grantApplication.save();
     }
 
     return grantApplication;
