@@ -1,7 +1,31 @@
+const getTokenId = require('../config/currency');
+
 module.exports = {
-  async verifyTransaction(hash, grantData, payoutNumber) {
+  async verifyTransaction(near, txHash, hashProposal, fundingAmount, nearId) {
     try {
+      const networkId = process.env.NEAR_NETWORK_ENV;
+
+      const txStatus = await near.connection.provider.txStatus(txHash, nearId);
+      const argsBase64 = txStatus.transaction.actions[0].FunctionCall.args;
+      const argsString = Buffer.from(argsBase64, 'base64').toString('utf8');
+      const args = JSON.parse(argsString);
+
+      const realTokenId = getTokenId(networkId);
+      const realReciverId = nearId;
+      const realAmount = BigInt((fundingAmount || 0) * 10 ** 18).toString();
+
+      // eslint-disable-next-line camelcase
+      const { token_id, receiver_id, amount } = args.proposal.kind.Transfer;
+
+      // eslint-disable-next-line camelcase
+      if (args.proposal.description.includes(hashProposal.slice(0, 8)) && token_id === realTokenId && realReciverId === receiver_id && realAmount === amount) {
+        return true;
+      }
+
+      return false;
     } catch (e) {
-        return false
+      console.log(e);
+      return false;
     }
-}
+  },
+};
