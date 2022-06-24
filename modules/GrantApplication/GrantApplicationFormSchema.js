@@ -1,7 +1,6 @@
 /*
     This file is a copy of https://github.com/NEAR-labs/ui.fund3r/blob/master/form-schemas/grantApplicationFormSchema.ts
     Where z.nativeEnum has been replaced by z.enum
-    And where types has been removed and t has been mocked
     ES6 import/export replaced by CommonJS require/module.exports
     Adding preprocess for dates
 */
