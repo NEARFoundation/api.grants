@@ -17,6 +17,7 @@ const near = require('./middlewares/near');
 
 // Routes
 const grantApplicationRoutes = require('./modules/GrantApplication/GrantApplicationRoutes');
+const milestoneRoutes = require('./modules/Milestone/MilestoneRoutes');
 
 // Options
 const corsOptions = {
@@ -28,7 +29,6 @@ i18n.configure({
   directory: path.join(__dirname, 'locales'),
   objectNotation: true,
 });
-
 const setup = async () => {
   const app = express();
 
@@ -55,6 +55,7 @@ const setup = async () => {
 
   // Set up routes
   app.use('/api/v1/grants', grantApplicationRoutes);
+  app.use('/api/v1/grants/:id/milestones', milestoneRoutes);
 
   // Set up error catching
   app.use((req, res, next) => {

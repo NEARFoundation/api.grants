@@ -16,9 +16,6 @@ const nearService = require('../../services/nearService');
  * @description :: Server-side logic for managing GrantApplications.
  */
 module.exports = {
-  /**
-   * GrantApplicationController.list()
-   */
   async list(req, res) {
     try {
       const { accountId: nearId } = req.near;
@@ -49,9 +46,6 @@ module.exports = {
     }
   },
 
-  /**
-   * GrantApplicationController.show()
-   */
   async show(req, res) {
     try {
       const grantApplication = await getGrant(req, res);
@@ -63,9 +57,6 @@ module.exports = {
     }
   },
 
-  /**
-   * GrantApplicationController.saveDraft()
-   */
   // eslint-disable-next-line max-lines-per-function
   async saveDraft(req, res) {
     try {
@@ -81,9 +72,6 @@ module.exports = {
     }
   },
 
-  /**
-   * GrantApplicationController.submit()
-   */
   async submit(req, res) {
     try {
       const grantApplication = await getVerifyAndSaveGrantData(req, res);
