@@ -17,4 +17,4 @@ const createSchema = (t) => {
   });
 };
 
-export default createSchema;
+module.exports = createSchema;

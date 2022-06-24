@@ -9,7 +9,7 @@ const loadAndVerifyMilestoneData = require('../../utilities/loadAndVerifyMilesto
 module.exports = {
   async update(req, res) {
     try {
-      const milestone = await loadAndVerifyMilestoneData(req, res);
+      const updatedGrantWithData = await loadAndVerifyMilestoneData(req, res);
 
       // eslint-disable-next-line no-underscore-dangle
       const milestoneValidationSchema = createSchema(req.__);
@@ -31,11 +31,9 @@ module.exports = {
         });
       }
 
-      milestone.dateSubmission = new Date();
+      await updatedGrantWithData.save();
 
-      await milestone.save();
-
-      return res.json(milestone);
+      return res.json(updatedGrantWithData);
     } catch (err) {
       return res.status(500).json({
         message: err.message,
