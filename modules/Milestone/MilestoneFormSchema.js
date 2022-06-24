@@ -7,7 +7,7 @@
 const { z } = require('zod');
 
 const createSchema = (t) => {
-  z.object({
+  const schema = z.object({
     githubUrl: z.string({ required_error: t('form.githubUrl.error') }).url({ message: t('form.githubUrl.error') }),
     attachment: z
       .string({ required_error: t('form.attachment.error') })
@@ -15,6 +15,8 @@ const createSchema = (t) => {
       .optional(),
     comments: z.string().optional(),
   });
+
+  return schema;
 };
 
 module.exports = createSchema;
