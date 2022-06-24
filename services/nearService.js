@@ -14,13 +14,19 @@ module.exports = {
       const realReciverId = nearId;
       const realAmount = BigInt((fundingAmount || 0) * 10 ** 18).toString();
 
-      // eslint-disable-next-line camelcase
+      /* eslint-disable camelcase */
       const { token_id, receiver_id, amount } = args.proposal.kind.Transfer;
 
-      // eslint-disable-next-line camelcase
-      if (args.proposal.description.includes(hashProposal.slice(0, 8)) && token_id === realTokenId && realReciverId === receiver_id && realAmount === amount) {
+      if (
+        txStatus.status.SuccessValue &&
+        args.proposal.description.includes(hashProposal.slice(0, 8)) &&
+        token_id === realTokenId &&
+        realReciverId === receiver_id &&
+        realAmount === amount
+      ) {
         return true;
       }
+      /* eslint-enable camelcase */
 
       return false;
     } catch (e) {
