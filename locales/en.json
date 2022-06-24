@@ -426,36 +426,5 @@
     "comments": {
       "no-comments": "No comments posted yet"
     }
-  },
-  "form.projectName.error": "form.projectName.error",
-  "form.projectUrl.error": "form.projectUrl.error",
-  "form.githubUrl.error": "form.githubUrl.error",
-  "form.projectLaunchDate.error": "form.projectLaunchDate.error",
-  "form.projectDescription.error": "form.projectDescription.error",
-  "form.fundingAmount.error": "form.fundingAmount.error",
-  "form.fundingAmount.description": "form.fundingAmount.description",
-  "form.budget.error": "form.budget.error",
-  "form.deliveryDate.error": "form.deliveryDate.error",
-  "form.description.error": "form.description.error",
-  "form.whatAndWhy.error": "form.whatAndWhy.error",
-  "form.competitionDifference.error": "form.competitionDifference.error",
-  "form.opensourceComponentUse.error": "form.opensourceComponentUse.error",
-  "form.opensourceComponentUse.description": "form.opensourceComponentUse.description",
-  "form.impactOnEcosystem.error": "form.impactOnEcosystem.error",
-  "form.excitementNear.error": "form.excitementNear.error",
-  "form.successMesurement.error": "form.successMesurement.error",
-  "form.successMesurement.description": "form.successMesurement.description",
-  "form.attachment.error": "form.attachment.error",
-  "form.firstname.error": "form.firstname.error",
-  "form.lastname.error": "form.lastname.error",
-  "form.dateOfBirth.error": "form.dateOfBirth.error",
-  "form.email.error": "form.email.error",
-  "form.aboutTeam.error": "form.aboutTeam.error",
-  "form.addressCountry.error": "form.addressCountry.error",
-  "form.addressCity.error": "form.addressCity.error",
-  "form.addressStreet.error": "form.addressStreet.error",
-  "form.addressZip.error": "form.addressZip.error",
-  "form.howHeardGrants.error": "form.howHeardGrants.error",
-  "form.howHeardGrants.description": "form.howHeardGrants.description",
-  "form.comments.error": "form.comments.error"
+  }
 }
