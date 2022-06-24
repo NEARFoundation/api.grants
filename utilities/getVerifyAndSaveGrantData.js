@@ -57,7 +57,6 @@ const getVerifyAndSaveGrantData = async (req, res) => {
     grantApplication.projectDescription = grantData.projectDescription ? grantData.projectDescription : grantApplication.projectDescription;
     grantApplication.currency = grantData.currency ? grantData.currency : grantApplication.currency;
     grantApplication.fundingAmount = grantData.fundingAmount ? grantData.fundingAmount : grantApplication.fundingAmount;
-    grantApplication.nearFundingAmount = grantData.nearFundingAmount ? grantData.nearFundingAmount : grantApplication.nearFundingAmount;
     grantApplication.whatAndWhy = grantData.whatAndWhy ? grantData.whatAndWhy : grantApplication.whatAndWhy;
     grantApplication.competitionDifference = grantData.competitionDifference ? grantData.competitionDifference : grantApplication.competitionDifference;
     grantApplication.openSourceState = grantData.openSourceState ? grantData.openSourceState : grantApplication.openSourceState;

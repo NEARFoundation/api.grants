@@ -32,7 +32,6 @@ const GrantApplicationSchema = new Schema(
     projectDescription: String,
     currency: String,
     fundingAmount: Number,
-    nearFundingAmount: String,
     whatAndWhy: String,
     competitionDifference: String,
     openSourceState: String,
