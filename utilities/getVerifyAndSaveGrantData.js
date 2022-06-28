@@ -13,15 +13,17 @@ const getVerifyAndSaveGrantData = async (req, res) => {
     });
 
     if (!grantApplication) {
-      return res.status(404).json({
+      res.status(404).json({
         message: 'No such GrantApplication under this near account',
       });
+      return;
     }
 
     if (grantApplication.dateSubmission) {
-      return res.status(400).json({
+      res.status(400).json({
         message: 'Cannot update a submitted GrantApplication',
       });
+      return;
     }
 
     const { grantData, signedGrantData } = req.body;
@@ -29,9 +31,10 @@ const getVerifyAndSaveGrantData = async (req, res) => {
     const isSignatureValid = await verifySignatureOfObject(signedGrantData, grantData, nearId, near);
 
     if (!isSignatureValid) {
-      return res.status(401).json({
+      res.status(401).json({
         message: 'Invalid signature',
       });
+      return;
     }
 
     grantApplication.firstname = grantData.firstname ? grantData.firstname : grantApplication.firstname;
@@ -77,9 +80,10 @@ const getVerifyAndSaveGrantData = async (req, res) => {
     grantApplication.milestones = grantData.milestones ? grantData.milestones : grantApplication.milestones;
     grantApplication.dateLastDraftSaving = new Date();
 
+    // eslint-disable-next-line consistent-return
     return grantApplication;
   } catch (err) {
-    return res.status(500).json({
+    res.status(500).json({
       message: err.message,
     });
   }

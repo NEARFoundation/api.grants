@@ -8,7 +8,8 @@ const verifyNearSignatureHeader = async (req, res, next) => {
   }
 
   if (!req.headers['x-near-account-id'] || !req.headers['x-near-signature']) {
-    return res.status(401).send('Unauthorized');
+    res.status(401).send('Unauthorized');
+    return;
   }
 
   const accountId = req.headers['x-near-account-id'];
@@ -28,11 +29,11 @@ const verifyNearSignatureHeader = async (req, res, next) => {
 
     if (publicKey.verify(message, signature)) {
       req.near.accountId = accountId;
-      return next();
+      next();
     }
   }
 
-  return res.status(401).send('Unauthorized');
+  res.status(401).send('Unauthorized');
 };
 
 module.exports = verifyNearSignatureHeader;

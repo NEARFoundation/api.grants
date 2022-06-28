@@ -35,12 +35,14 @@ module.exports = {
         });
         await grantApplication.save();
 
-        return res.json([grantApplication]);
+        res.json([grantApplication]);
+        return;
       }
 
-      return res.json(grantApplications);
+      res.json(grantApplications);
+      return;
     } catch (err) {
-      return res.status(500).json({
+      res.status(500).json({
         message: err.message,
       });
     }
@@ -49,9 +51,9 @@ module.exports = {
   async show(req, res) {
     try {
       const grantApplication = await getGrant(req, res);
-      return res.json(grantApplication);
+      res.json(grantApplication);
     } catch (err) {
-      return res.status(500).json({
+      res.status(500).json({
         message: err.message,
       });
     }
@@ -63,9 +65,9 @@ module.exports = {
       const grantApplication = await getVerifyAndSaveGrantData(req, res);
       await grantApplication.save();
 
-      return res.json(grantApplication);
+      res.json(grantApplication);
     } catch (error) {
-      return res.status(500).json({
+      res.status(500).json({
         message: 'Error when updating grantApplication.',
         error,
       });
@@ -90,10 +92,12 @@ module.exports = {
           parsedErrors[path] = error.message;
         });
 
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Invalid grant data',
           errors: parsedErrors,
         });
+
+        return;
       }
 
       grantApplication.dateSubmission = new Date();
@@ -104,9 +108,9 @@ module.exports = {
 
       await grantApplication.save();
 
-      return res.json(grantApplication);
+      res.json(grantApplication);
     } catch (error) {
-      return res.status(500).json({
+      res.status(500).json({
         message: 'Error when updating grantApplication.',
         error,
       });
@@ -119,24 +123,27 @@ module.exports = {
       const { accountId, near } = req.near;
 
       if (grantApplication.interviewUrl) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Interview already scheduled',
         });
+        return;
       }
 
       if (!grantApplication.dateSubmission && !grantApplication.dateEvaluation) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Grant not submitted or not approved',
         });
+        return;
       }
 
       const { calendlyUrl, signedCalendlyUrl } = req.body;
       const isSignatureValid = await verifySignatureOfString(signedCalendlyUrl, calendlyUrl, accountId, near);
 
       if (!isSignatureValid) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Invalid signature',
         });
+        return;
       }
 
       grantApplication.interviewUrl = calendlyUrl;
@@ -145,9 +152,9 @@ module.exports = {
 
       await grantApplication.save();
 
-      return res.json(grantApplication);
+      res.json(grantApplication);
     } catch (error) {
-      return res.status(500).json({
+      res.status(500).json({
         message: 'Error when updating grantApplication',
         error,
       });
@@ -159,18 +166,19 @@ module.exports = {
       const grantApplication = await getGrant(req, res);
 
       if (!grantApplication.dateAgreementSignature || !grantApplication.helloSignRequestId) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Agreement not signed',
         });
+        return;
       }
 
       const fileName = await hellosignService.downloadAgreement(grantApplication.helloSignRequestId);
 
-      return res.download(fileName, 'agreement.zip', () => {
+      res.download(fileName, 'agreement.zip', () => {
         fs.unlinkSync(fileName);
       });
     } catch (error) {
-      return res.status(500).json({
+      res.status(500).json({
         message: 'Error when downloading agreement',
         error,
       });
@@ -182,9 +190,10 @@ module.exports = {
       const grantApplication = await getGrant(req, res);
 
       if (grantApplication.proposalNearTransactionHash) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Transaction already done on chain',
         });
+        return;
       }
 
       const { proposalNearTransactionHash } = req.body;
@@ -193,9 +202,10 @@ module.exports = {
       const isTransactionValid = await nearService.verifyTransaction(req.near.near, proposalNearTransactionHash, hashProposal, fundingAmount, nearId);
 
       if (!isTransactionValid) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Invalid transaction',
         });
+        return;
       }
 
       grantApplication.proposalNearTransactionHash = proposalNearTransactionHash;
@@ -203,9 +213,9 @@ module.exports = {
 
       await grantApplication.save();
 
-      return res.json(grantApplication);
+      res.json(grantApplication);
     } catch (error) {
-      return res.status(500).json({
+      res.status(500).json({
         message: 'The transaction could not be validated',
         error,
       });

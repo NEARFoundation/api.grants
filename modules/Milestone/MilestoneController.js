@@ -19,16 +19,18 @@ module.exports = {
       const { milestone, grantApplication } = await loadAndVerifyMilestoneAndGrant(req, res);
 
       if (milestone.dateSubmission) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'This milestone has already been submitted',
         });
+        return;
       }
 
       const isSignatureValid = await verifySignatureOfObject(signedData, milestoneData, nearId, near);
       if (!isSignatureValid) {
-        return res.status(401).json({
+        res.status(401).json({
           message: 'Invalid signature',
         });
+        return;
       }
 
       milestone.githubUrl = milestoneData.githubUrl;
@@ -49,17 +51,18 @@ module.exports = {
           parsedErrors[path] = error.message;
         });
 
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Invalid grant data',
           errors: parsedErrors,
         });
+        return;
       }
 
       await grantApplication.save();
 
-      return res.json(grantApplication);
+      res.json(grantApplication);
     } catch (err) {
-      return res.status(500).json({
+      res.status(500).json({
         message: err.message,
       });
     }
@@ -70,15 +73,17 @@ module.exports = {
       const { milestone, grantApplication } = await loadAndVerifyMilestoneAndGrant(req, res);
 
       if (!milestone.dateSubmission) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'This milestone had not been submitted yet',
         });
+        return;
       }
 
       if (milestone.proposalNearTransactionHash) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Milestone transaction already done on chain',
         });
+        return;
       }
 
       const { proposalNearTransactionHash } = req.body;
@@ -89,9 +94,10 @@ module.exports = {
       const isTransactionValid = await nearService.verifyTransaction(req.near.near, proposalNearTransactionHash, hashProposal, fundingAmount, nearId);
 
       if (!isTransactionValid) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Invalid transaction',
         });
+        return;
       }
 
       milestone.proposalNearTransactionHash = proposalNearTransactionHash;
@@ -99,10 +105,10 @@ module.exports = {
 
       await grantApplication.save();
 
-      return res.json(grantApplication);
+      res.json(grantApplication);
     } catch (err) {
       console.log(err);
-      return res.status(500).json({
+      res.status(500).json({
         message: err.message,
       });
     }
@@ -114,24 +120,27 @@ module.exports = {
       const { accountId, near } = req.near;
 
       if (milestone.interviewUrl) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Interview already scheduled',
         });
+        return;
       }
 
       if (!milestone.dateSubmission || !milestone.proposalNearTransactionHash || !milestone.isNearProposalValid) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'This milestone had not been submitted',
         });
+        return;
       }
 
       const { calendlyUrl, signedCalendlyUrl } = req.body;
       const isSignatureValid = await verifySignatureOfString(signedCalendlyUrl, calendlyUrl, accountId, near);
 
       if (!isSignatureValid) {
-        return res.status(400).json({
+        res.status(400).json({
           message: 'Invalid signature',
         });
+        return;
       }
 
       milestone.interviewUrl = calendlyUrl;
@@ -140,10 +149,9 @@ module.exports = {
 
       await grantApplication.save();
 
-      return res.json(grantApplication);
+      res.json(grantApplication);
     } catch (err) {
-      console.log(err);
-      return res.status(500).json({
+      res.status(500).json({
         message: err.message,
       });
     }

@@ -12,22 +12,25 @@ const loadAndVerifyMilestoneAndGrant = async (req, res) => {
     });
 
     if (!grantApplication) {
-      return res.status(404).json({
+      res.status(404).json({
         message: 'No such GrantApplication under this near account',
       });
+      return;
     }
 
     const milestone = grantApplication.milestones[milestoneId];
 
     if (milestoneId > 0 && !grantApplication.milestones[milestoneId - 1].dateValidation) {
-      return res.status(400).json({
+      res.status(400).json({
         message: 'The previous milestone needs to be accepted before submitting this one',
       });
+      return;
     }
 
+    // eslint-disable-next-line consistent-return
     return { milestone, grantApplication };
   } catch (err) {
-    return res.status(500).json({
+    res.status(500).json({
       message: err.message,
     });
   }
