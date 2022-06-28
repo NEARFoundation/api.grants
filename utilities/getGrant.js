@@ -14,9 +14,10 @@ const getGrant = async (req, res) => {
     });
 
     if (!grantApplication) {
-      return res.status(404).json({
+      res.status(404).json({
         message: 'No such GrantApplication under this near account',
       });
+      return;
     }
 
     const { firstname, lastname, email } = grantApplication;
@@ -51,22 +52,24 @@ const getGrant = async (req, res) => {
     }
 
     if (grantApplication.dateAgreementSignature && !grantApplication.hashProposal) {
-      const { salt, nearId, fundingAmount } = grantApplication;
-      grantApplication.hashProposal = hashProposal(salt, nearId, fundingAmount, 0)
+      const { salt, fundingAmount } = grantApplication;
+      grantApplication.hashProposal = hashProposal(salt, nearId, fundingAmount, 0);
 
       grantApplication.milestones.map((milestone, index) => {
-        const { budget } = milestone
-        const payoutNumber = index + 1
-        milestone.hashProposal = hashProposal(salt, nearId, budget, payoutNumber)
+        const { budget } = milestone;
+        const payoutNumber = index + 1;
+        // eslint-disable-next-line no-param-reassign
+        milestone.hashProposal = hashProposal(salt, nearId, budget, payoutNumber);
         return milestone;
-      })
+      });
 
       await grantApplication.save();
     }
 
+    // eslint-disable-next-line consistent-return
     return grantApplication;
   } catch (err) {
-    return res.status(500).json({
+    res.status(500).json({
       message: err.message,
     });
   }
