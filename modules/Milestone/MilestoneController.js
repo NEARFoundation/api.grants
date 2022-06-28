@@ -1,6 +1,7 @@
 const createSchema = require('./MilestoneFormSchema');
 const loadAndVerifyMilestoneAndGrant = require('../../utilities/loadAndVerifyMilestoneAndGrant');
 const verifySignatureOfObject = require('../../utilities/verifySignatureOfObject');
+const nearService = require('../../services/nearService');
 
 /**
  * MilestoneController.js
@@ -14,6 +15,12 @@ module.exports = {
       const { signedData, milestoneData } = req.body;
 
       const { milestone, grantApplication } = await loadAndVerifyMilestoneAndGrant(req, res);
+
+      if (milestone.dateSubmission) {
+        return res.status(400).json({
+          message: 'This milestone has already been submitted',
+        });
+      }
 
       const isSignatureValid = await verifySignatureOfObject(signedData, milestoneData, nearId, near);
       if (!isSignatureValid) {
@@ -56,7 +63,48 @@ module.exports = {
     }
   },
 
-  async validateAndSaveTransactionHash(req, res) {},
+  async validateAndSaveTransactionHash(req, res) {
+    try {
+      const { milestone, grantApplication } = await loadAndVerifyMilestoneAndGrant(req, res);
+
+      if (!milestone.dateSubmission) {
+        return res.status(400).json({
+          message: 'This milestone had not been submitted yet',
+        });
+      }
+
+      if (milestone.proposalNearTransactionHash) {
+        return res.status(400).json({
+          message: 'Milestone transaction already done on chain',
+        });
+      }
+
+      const { proposalNearTransactionHash } = req.body;
+
+      const { nearId } = grantApplication;
+      const { hashProposal, budget: fundingAmount } = milestone;
+
+      const isTransactionValid = await nearService.verifyTransaction(req.near.near, proposalNearTransactionHash, hashProposal, fundingAmount, nearId);
+
+      if (!isTransactionValid) {
+        return res.status(400).json({
+          message: 'Invalid transaction',
+        });
+      }
+
+      milestone.proposalNearTransactionHash = proposalNearTransactionHash;
+      milestone.isNearProposalValid = true;
+
+      await grantApplication.save();
+
+      return res.json(grantApplication);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: err.message,
+      });
+    }
+  },
 
   async setInterview(req, res) {},
 };

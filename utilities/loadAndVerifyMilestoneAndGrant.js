@@ -19,12 +19,6 @@ const loadAndVerifyMilestoneAndGrant = async (req, res) => {
 
     const milestone = grantApplication.milestones[milestoneId];
 
-    if (milestone.dateSubmission) {
-      return res.status(400).json({
-        message: 'This milestone has already been submitted',
-      });
-    }
-
     if (milestoneId > 0 && !grantApplication.milestones[milestoneId - 1].dateValidation) {
       return res.status(400).json({
         message: 'The previous milestone needs to be accepted before submitting this one',
