@@ -1,6 +1,8 @@
 const createSchema = require('./MilestoneFormSchema');
 const loadAndVerifyMilestoneAndGrant = require('../../utilities/loadAndVerifyMilestoneAndGrant');
 const verifySignatureOfObject = require('../../utilities/verifySignatureOfObject');
+const verifySignatureOfString = require('../../utilities/verifySignatureOfString');
+const calendlyService = require('../../services/calendlyService');
 const nearService = require('../../services/nearService');
 
 /**
@@ -106,5 +108,44 @@ module.exports = {
     }
   },
 
-  async setInterview(req, res) {},
+  async setInterview(req, res) {
+    try {
+      const { milestone, grantApplication } = await loadAndVerifyMilestoneAndGrant(req, res);
+      const { accountId, near } = req.near;
+
+      if (milestone.interviewUrl) {
+        return res.status(400).json({
+          message: 'Interview already scheduled',
+        });
+      }
+
+      if (!milestone.dateSubmission || !milestone.proposalNearTransactionHash || !milestone.isNearProposalValid) {
+        return res.status(400).json({
+          message: 'This milestone had not been submitted',
+        });
+      }
+
+      const { calendlyUrl, signedCalendlyUrl } = req.body;
+      const isSignatureValid = await verifySignatureOfString(signedCalendlyUrl, calendlyUrl, accountId, near);
+
+      if (!isSignatureValid) {
+        return res.status(400).json({
+          message: 'Invalid signature',
+        });
+      }
+
+      milestone.interviewUrl = calendlyUrl;
+      milestone.dateInterviewScheduled = new Date();
+      milestone.dateInterview = await calendlyService.getEventDate(milestone.interviewUrl);
+
+      await grantApplication.save();
+
+      return res.json(grantApplication);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: err.message,
+      });
+    }
+  },
 };

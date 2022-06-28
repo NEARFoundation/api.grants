@@ -94,6 +94,7 @@ const GrantApplicationSchema = new Schema(
         dateRejection: Date,
         dateValidation: Date,
         hashProposal: String,
+        interviewUrl: String,
       },
     ],
     payments: [
