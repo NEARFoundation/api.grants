@@ -40,7 +40,6 @@ module.exports = {
       }
 
       res.json(grantApplications);
-      return;
     } catch (err) {
       res.status(500).json({
         message: err.message,

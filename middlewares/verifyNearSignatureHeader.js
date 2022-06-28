@@ -30,6 +30,7 @@ const verifyNearSignatureHeader = async (req, res, next) => {
     if (publicKey.verify(message, signature)) {
       req.near.accountId = accountId;
       next();
+      return;
     }
   }
 
