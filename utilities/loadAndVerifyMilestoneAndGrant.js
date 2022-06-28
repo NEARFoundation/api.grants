@@ -1,11 +1,10 @@
 const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicationModel');
-const verifySignatureOfObject = require('./verifySignatureOfObject');
 
 // eslint-disable-next-line max-lines-per-function
-const loadAndVerifyMilestoneData = async (req, res) => {
+const loadAndVerifyMilestoneAndGrant = async (req, res) => {
   try {
     const { id, milestoneId } = req.params;
-    const { accountId: nearId, near } = req.near;
+    const { accountId: nearId } = req.near;
 
     const grantApplication = await GrantApplicationModel.findOne({
       id,
@@ -32,22 +31,7 @@ const loadAndVerifyMilestoneData = async (req, res) => {
       });
     }
 
-    const { signedData, milestoneData } = req.body;
-
-    const isSignatureValid = await verifySignatureOfObject(signedData, milestoneData, nearId, near);
-
-    if (!isSignatureValid) {
-      return res.status(401).json({
-        message: 'Invalid signature',
-      });
-    }
-
-    milestone.githubUrl = milestoneData.githubUrl;
-    milestone.attachment = milestoneData.attachment;
-    milestone.comments = milestoneData.comments;
-    milestone.dateSubmission = new Date();
-
-    return grantApplication;
+    return { milestone, grantApplication };
   } catch (err) {
     return res.status(500).json({
       message: err.message,
@@ -55,4 +39,4 @@ const loadAndVerifyMilestoneData = async (req, res) => {
   }
 };
 
-module.exports = loadAndVerifyMilestoneData;
+module.exports = loadAndVerifyMilestoneAndGrant;
