@@ -1,11 +1,11 @@
-# api.fund3r
+# api.grants
 
 > Easy to set up end to end grant application form for DAOs on NEAR Protocol
 
 ## Repositories
 
-- [ui.fund3r](https://github.com/NEAR-labs/ui.fund3r)
-- [api.fund3r](https://github.com/NEAR-labs/api.fund3r)
+- [ui.grants](https://github.com/NEARWEEK/ui.grants)
+- [api.grants](https://github.com/NEARWEEK/api.grants)
 
 ## Technology stack
 
