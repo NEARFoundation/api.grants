@@ -1,6 +1,7 @@
 const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicationModel');
 const calendlyService = require('../services/calendlyService');
 const hellosignService = require('../services/hellosignService');
+const nearService = require('../services/nearService');
 const hashProposal = require('./hashProposal');
 
 const getGrant = async (req, res) => {
@@ -66,9 +67,13 @@ const getGrant = async (req, res) => {
       await grantApplication.save();
     }
 
+    const proposals = await nearService.loadProposals(req.near.account);
+    console.log(proposals);
+
     // eslint-disable-next-line consistent-return
     return grantApplication;
   } catch (err) {
+    console.log(err);
     res.status(500).json({
       message: err.message,
     });

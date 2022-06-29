@@ -1,4 +1,6 @@
+const nearApi = require('near-api-js');
 const getTokenId = require('../config/currency');
+const nearConfig = require('../config/near');
 
 module.exports = {
   async verifyTransaction(near, txHash, hashProposal, fundingAmount, nearId) {
@@ -31,6 +33,24 @@ module.exports = {
       return false;
     } catch (e) {
       return false;
+    }
+  },
+  async loadProposals(sender) {
+    try {
+      console.log(sender);
+
+      const contract = new nearApi.Contract(nearConfig.contractId, nearConfig.contractId, {
+        viewMethods: ['get_proposals'],
+        changeMethods: [],
+        sender,
+      });
+
+      const proposals = await contract.get_proposals();
+
+      return proposals;
+    } catch (e) {
+      console.log(e);
+      return [];
     }
   },
 };
