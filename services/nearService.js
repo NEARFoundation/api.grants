@@ -42,6 +42,7 @@ module.exports = {
         changeMethods: [],
       });
 
+      // to improve find better solution than loading 100000000
       const proposals = await contract.get_proposals({ from_index: 0, limit: 100000000 });
 
       return proposals;
