@@ -97,15 +97,16 @@ const GrantApplicationSchema = new Schema(
         interviewUrl: String,
       },
     ],
-    payments: [
-      {
-        date: Date,
-        milestoneId: String,
-        amount: Number,
-        currency: String,
-        status: String,
-      },
-    ],
+    // computed data
+    // payments: [
+    //   {
+    //     date: Date,
+    //     milestoneId: String,
+    //     amount: Number,
+    //     currency: String,
+    //     status: String,
+    //   },
+    // ],
     salt: { type: String, select: false },
   },
   { timestamps: true },
