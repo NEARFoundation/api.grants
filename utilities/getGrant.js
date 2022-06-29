@@ -4,6 +4,7 @@ const hellosignService = require('../services/hellosignService');
 const getPayments = require('./getPayments');
 const hashProposal = require('./hashProposal');
 
+// eslint-disable-next-line max-lines-per-function
 const getGrant = async (req, res) => {
   try {
     const { id } = req.params;
@@ -77,8 +78,12 @@ const getGrant = async (req, res) => {
     }
 
     if (grantApplication.hashProposal) {
-      const payments = getPayments(grantApplication, req.near.account);
+      const payments = await getPayments(grantApplication, req.near.account);
       grantApplication.payments = payments;
+
+      if (payments.length > 0) {
+        grantApplication.dateFirstPaymentSent = payments[0].date;
+      }
     }
 
     // eslint-disable-next-line consistent-return

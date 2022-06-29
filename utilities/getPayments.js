@@ -6,7 +6,7 @@ const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicat
 const getPayments = async (grantApplication, nearAccount) => {
   try {
     const { appName } = config;
-    const { _id, nearId } = grantApplication;
+    const { _id, nearId, currency } = grantApplication;
 
     const grantApplicationWithSalt = await GrantApplicationModel.findOne({
       _id,
@@ -44,16 +44,29 @@ const getPayments = async (grantApplication, nearAccount) => {
       const calculatedHash = hashProposal(salt, nearId, fundingAmount, proposalNumber).slice(0, 8);
       const proposalHash = proposal.description.slice(-8);
 
-      console.log(`CALCULATED ${calculatedHash} | FROM DB / Online ${proposalHash}`);
-
       return calculatedHash === proposalHash;
     });
 
-    console.log(validPaymentsProposal);
+    const payments = validPaymentsProposal.map((proposal) => {
+      // eslint-disable-next-line no-useless-escape
+      const proposalRegex = proposal.description.match(/\#([1-9][0-9]?) \|/);
+      const milestoneNumber = proposalRegex ? proposalRegex[1] : 0;
+      const amount = BigInt(proposal.kind.Transfer.amount / 10 ** 18).toString();
 
-    return [];
+      return {
+        id: proposal.id,
+        amount,
+        milestoneNumber,
+        currency,
+        date: new Date(proposal.submission_time / 1000000),
+        status: proposal.status === 'Approved' ? 'paid' : 'pending',
+      };
+    });
+
+    console.log(payments);
+
+    return payments;
   } catch (err) {
-    console.log(err);
     return [];
   }
 };
