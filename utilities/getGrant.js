@@ -3,6 +3,7 @@ const calendlyService = require('../services/calendlyService');
 const hellosignService = require('../services/hellosignService');
 const getPayments = require('./getPayments');
 const hashProposal = require('./hashProposal');
+const grantConfig = require('../config/grant');
 
 // eslint-disable-next-line max-lines-per-function
 const getGrant = async (req, res) => {
@@ -84,6 +85,12 @@ const getGrant = async (req, res) => {
       if (payments.length > 0) {
         grantApplication.dateFirstPaymentSent = payments[0].date;
       }
+
+      if (grantConfig.skipOnboarding && !grantApplication.dateOnboardingCompletion) {
+        grantApplication.dateOnboardingCompletion = new Date();
+      }
+
+      await grantApplication.save();
     }
 
     // eslint-disable-next-line consistent-return

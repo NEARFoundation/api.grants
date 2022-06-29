@@ -63,8 +63,6 @@ const getPayments = async (grantApplication, nearAccount) => {
       };
     });
 
-    console.log(payments);
-
     return payments;
   } catch (err) {
     return [];
