@@ -35,17 +35,14 @@ module.exports = {
       return false;
     }
   },
-  async loadProposals(sender) {
+  async loadProposals(account) {
     try {
-      console.log(sender);
-
-      const contract = new nearApi.Contract(nearConfig.contractId, nearConfig.contractId, {
+      const contract = new nearApi.Contract(account, nearConfig.contractId, {
         viewMethods: ['get_proposals'],
         changeMethods: [],
-        sender,
       });
 
-      const proposals = await contract.get_proposals();
+      const proposals = await contract.get_proposals({ from_index: 0, limit: 100000000 });
 
       return proposals;
     } catch (e) {
