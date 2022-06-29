@@ -2,6 +2,7 @@ const fs = require('fs');
 const config = require('../config/hellosign');
 // eslint-disable-next-line import/order
 const hellosign = require('hellosign-sdk')({ key: config.apiKey });
+const logger = require('../utilities/logger');
 
 const options = {
   test_mode: config.testMode,
@@ -35,6 +36,7 @@ module.exports = {
         helloSignRequestId,
       };
     } catch (err) {
+      logger.error(err);
       return {
         helloSignSignatureRequestId: null,
         helloSignRequestUrl: null,
