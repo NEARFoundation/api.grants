@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 const fs = require('fs');
+const crypto = require('crypto');
 const GrantApplicationModel = require('./GrantApplicationModel');
 const createSchema = require('./GrantApplicationFormSchema');
 const calendlyService = require('../../services/calendlyService');
@@ -32,6 +33,7 @@ module.exports = {
         const grantApplication = new GrantApplicationModel({
           nearId: req.near.accountId,
           currency: grantConfig.defaultCurrency,
+          salt: crypto.randomBytes(16).toString('hex'),
         });
         await grantApplication.save();
 
@@ -101,7 +103,7 @@ module.exports = {
 
       grantApplication.dateSubmission = new Date();
 
-      if (grantConfig.skipOnboarding) {
+      if (grantConfig.skipEvaluationApproval) {
         grantApplication.dateEvaluation = new Date();
       }
 

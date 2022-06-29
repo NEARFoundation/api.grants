@@ -1,8 +1,11 @@
 const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicationModel');
 const calendlyService = require('../services/calendlyService');
 const hellosignService = require('../services/hellosignService');
+const getPayments = require('./getPayments');
 const hashProposal = require('./hashProposal');
+const grantConfig = require('../config/grant');
 
+// eslint-disable-next-line max-lines-per-function
 const getGrant = async (req, res) => {
   try {
     const { id } = req.params;
@@ -52,7 +55,16 @@ const getGrant = async (req, res) => {
     }
 
     if (grantApplication.dateAgreementSignature && !grantApplication.hashProposal) {
-      const { salt, fundingAmount } = grantApplication;
+      const { fundingAmount, _id } = grantApplication;
+
+      const grantApplicationWithSalt = await GrantApplicationModel.findOne({
+        _id,
+      }).select({
+        salt: 1,
+      });
+
+      const { salt } = grantApplicationWithSalt;
+
       grantApplication.hashProposal = hashProposal(salt, nearId, fundingAmount, 0);
 
       grantApplication.milestones.map((milestone, index) => {
@@ -62,6 +74,21 @@ const getGrant = async (req, res) => {
         milestone.hashProposal = hashProposal(salt, nearId, budget, payoutNumber);
         return milestone;
       });
+
+      await grantApplication.save();
+    }
+
+    if (grantApplication.hashProposal) {
+      const payments = await getPayments(grantApplication, req.near.account);
+      grantApplication.payments = payments;
+
+      if (payments.length > 0) {
+        grantApplication.dateFirstPaymentSent = payments[0].date;
+      }
+
+      if (grantConfig.skipOnboarding && !grantApplication.dateOnboardingCompletion) {
+        grantApplication.dateOnboardingCompletion = new Date();
+      }
 
       await grantApplication.save();
     }
