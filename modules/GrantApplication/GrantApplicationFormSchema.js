@@ -45,9 +45,9 @@ const createSchema = (t) =>
         budget: z.number({ invalid_type_error: t('form.budget.error'), required_error: t('form.budget.error') }).min(1, { message: t('form.budget.error') }),
         deliveryDate: z.preprocess(preprocessDate, z.date({ invalid_type_error: t('form.deliveryDate.error'), required_error: t('form.deliveryDate.error') })),
         description: z
-          .string({ required_error: t('form.description.error') })
-          .min(1, { message: t('form.description.error') })
-          .max(100, { message: t('form.description.error') }),
+          .string({ required_error: t('form.milestoneDescription.error') })
+          .min(1, { message: t('form.milestoneDescription.error') })
+          .max(100, { message: t('form.milestoneDescription.error') }),
       }),
     ),
 
