@@ -47,7 +47,6 @@ module.exports = {
 
       return proposals;
     } catch (e) {
-      console.log(e);
       return [];
     }
   },

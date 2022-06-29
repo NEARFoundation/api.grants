@@ -41,8 +41,10 @@ const getPayments = async (grantApplication, nearAccount) => {
       const proposalNumber = proposalRegex ? proposalRegex[1] : 0;
 
       const fundingAmount = BigInt(proposal.kind.Transfer.amount / 10 ** 18).toString();
-      const calculatedHash = hashProposal(salt, nearId, fundingAmount, proposalNumber);
+      const calculatedHash = hashProposal(salt, nearId, fundingAmount, proposalNumber).slice(0, 8);
       const proposalHash = proposal.description.slice(-8);
+
+      console.log(`CALCULATED ${calculatedHash} | FROM DB / Online ${proposalHash}`);
 
       return calculatedHash === proposalHash;
     });

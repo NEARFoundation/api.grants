@@ -53,7 +53,16 @@ const getGrant = async (req, res) => {
     }
 
     if (grantApplication.dateAgreementSignature && !grantApplication.hashProposal) {
-      const { salt, fundingAmount } = grantApplication;
+      const { fundingAmount, _id } = grantApplication;
+
+      const grantApplicationWithSalt = await GrantApplicationModel.findOne({
+        _id,
+      }).select({
+        salt: 1,
+      });
+
+      const { salt } = grantApplicationWithSalt;
+
       grantApplication.hashProposal = hashProposal(salt, nearId, fundingAmount, 0);
 
       grantApplication.milestones.map((milestone, index) => {
@@ -67,8 +76,10 @@ const getGrant = async (req, res) => {
       await grantApplication.save();
     }
 
-    const payments = getPayments(grantApplication, req.near.account);
-    grantApplication.payments = payments;
+    if (grantApplication.hashProposal) {
+      const payments = getPayments(grantApplication, req.near.account);
+      grantApplication.payments = payments;
+    }
 
     // eslint-disable-next-line consistent-return
     return grantApplication;
