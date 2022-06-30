@@ -11,8 +11,8 @@ module.exports = {
             header: {
               image: {
                 path: path.join(__dirname, '../../assets/logo.png'),
-                width: invoiceConfig.logoWidth,
-                height: invoiceConfig.logoHeight,
+                width: parseInt(invoiceConfig.logoWidth, 10),
+                height: parseInt(invoiceConfig.logoHeight, 10),
               },
             },
           },
