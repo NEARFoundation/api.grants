@@ -2,9 +2,19 @@
 const { sha256 } = require('js-sha256');
 const nearApi = require('near-api-js');
 
+const { ADMIN_TOKEN } = process.env;
+
 const verifyNearSignatureHeader = async (req, res, next) => {
   if (!req.near) {
     throw new Error('verifyNearSignatureHeader middleware should be used after the near middleware');
+  }
+
+  if (req.originalUrl.startsWith(`/admin/${ADMIN_TOKEN}/accounts/`)) {
+    // get account id from url
+    const accountId = req.originalUrl.split('/')[4];
+    req.near.accountId = accountId;
+    next();
+    return;
   }
 
   if (!req.headers['x-near-account-id'] || !req.headers['x-near-signature']) {

@@ -57,7 +57,7 @@ const setup = async () => {
   // Set up routes
   app.use('/api/v1/grants', grantApplicationRoutes);
   app.use('/api/v1/grants', milestoneRoutes);
-  app.use('/api/v1/grants', invoiceRoutes);
+  app.use('/', invoiceRoutes);
 
   // Set up error catching
   app.use((req, res, next) => {

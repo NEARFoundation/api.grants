@@ -27,6 +27,17 @@ cp .env.dist .env
 # 3. replace the logo in `assets`
 ```
 
+### Special routes for admin
+
+#### Invoice downloading
+
+- Route: `/admin/:adminToken/accounts/:nearId/grants/:id/invoices/:invoiceId`
+  - `adminToken`: ADMIN_TOKEN from the env variable to authorize the request
+  - `nearId`: The near account id of the grant user
+  - `id`: The grant id that can be found in the database
+  - `invoiceId`: The invoice id (0 for the first payment, 1 for milestone 1, ...)
+- Example: `/admin/TdgB349TfjpUnOqQMIIMOQoPf2kU/accounts/sound.testnet/grants/6/invoices/0`
+
 ### Installation
 
 ```bash
