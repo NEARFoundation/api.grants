@@ -18,6 +18,7 @@ const near = require('./middlewares/near');
 // Routes
 const grantApplicationRoutes = require('./modules/GrantApplication/GrantApplicationRoutes');
 const milestoneRoutes = require('./modules/Milestone/MilestoneRoutes');
+const invoiceRoutes = require('./modules/Invoice/InvoiceRoutes');
 
 // Options
 const corsOptions = {
@@ -56,6 +57,7 @@ const setup = async () => {
   // Set up routes
   app.use('/api/v1/grants', grantApplicationRoutes);
   app.use('/api/v1/grants', milestoneRoutes);
+  app.use('/api/v1/grants', invoiceRoutes);
 
   // Set up error catching
   app.use((req, res, next) => {
