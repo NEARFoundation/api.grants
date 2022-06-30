@@ -426,5 +426,22 @@
     "comments": {
       "no-comments": "No comments posted yet"
     }
+  },
+  "invoice": {
+    "title": "Invoice",
+    "number": "Invoice Number",
+    "status": "Status",
+    "date": "Date",
+    "to": "Bill To",
+    "from": "Bill From",
+    "near_account": "NEAR Account Id: ",
+    "description": "Description",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal",
+    "grant_for": "Grant for",
+    "without_vat": "Total without VAT",
+    "vat_rate": "VAT Rate",
+    "vat_paid": "VAT Paid",
+    "total": "Total paid with VAT"
   }
 }

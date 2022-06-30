@@ -20,8 +20,10 @@ module.exports = {
         throw new Error('Payment not found');
       }
 
+      // eslint-disable-next-line no-underscore-dangle
+      const t = req.__;
       const filename = `${grantApplication.nearId}-${grantApplication.id}-${invoiceId}-${Date.now()}-${Math.floor(Math.random() * 100000)}.pdf`;
-      const invoicePath = await InvoiceGenerator.createInvoice(filename, payment, grantApplication, invoiceId, invoiceConfig);
+      const invoicePath = await InvoiceGenerator.createInvoice({ filename, payment, grantApplication, invoiceId, invoiceConfig, t });
 
       // Required hack to make the file download
       // eslint-disable-next-line no-promise-executor-return

@@ -3,7 +3,7 @@ const path = require('path');
 const MicroInvoice = require('microinvoice');
 
 module.exports = {
-  async createInvoice(filename, payment, grantApplication, invoiceId, invoiceConfig) {
+  async createInvoice({ filename, payment, grantApplication, invoiceId, invoiceConfig, t }) {
     try {
       return new Promise((resolve, reject) => {
         const myInvoice = new MicroInvoice({
@@ -18,19 +18,19 @@ module.exports = {
           },
           data: {
             invoice: {
-              name: 'Invoice',
+              name: t('invoice.title'),
 
               header: [
                 {
-                  label: 'Invoice Number',
+                  label: t('invoice.number'),
                   value: invoiceId,
                 },
                 {
-                  label: 'Status',
+                  label: t('invoice.status'),
                   value: payment.status,
                 },
                 {
-                  label: 'Date',
+                  label: t('invoice.date'),
                   value: payment.date.toLocaleDateString('en-US'),
                 },
               ],
@@ -39,14 +39,14 @@ module.exports = {
 
               customer: [
                 {
-                  label: 'Bill To',
+                  label: t('invoice.to'),
                   value: invoiceConfig.invoiceRecipientData,
                 },
               ],
 
               seller: [
                 {
-                  label: 'Bill From',
+                  label: t('invoice.from'),
                   value: [
                     `${grantApplication.firstname} ${grantApplication.lastname}`,
                     grantApplication.addressCountry,
@@ -64,7 +64,7 @@ module.exports = {
 
               legal: [
                 {
-                  value: `Near account Id: ${grantApplication.nearId}`,
+                  value: `${t('invoice.near_account')} ${grantApplication.nearId}`,
                   weight: 'bold',
                   color: 'primary',
                 },
@@ -78,20 +78,20 @@ module.exports = {
               details: {
                 header: [
                   {
-                    value: 'Description',
+                    value: t('invoice.description'),
                   },
                   {
-                    value: 'Quantity',
+                    value: t('invoice.quantity'),
                   },
                   {
-                    value: 'Subtotal',
+                    value: t('invoice.subtotal'),
                   },
                 ],
 
                 parts: [
                   [
                     {
-                      value: `Grant for ${grantApplication.name}`,
+                      value: `${t('invoice.grant_for')} ${grantApplication.projectName}`,
                     },
                     {
                       value: 1,
@@ -105,21 +105,21 @@ module.exports = {
 
                 total: [
                   {
-                    label: 'Total without VAT',
+                    label: t('invoice.without_vat'),
                     value: payment.amount,
                     price: true,
                   },
                   {
-                    label: 'VAT Rate',
+                    label: t('invoice.vat_rate'),
                     value: '0%',
                   },
                   {
-                    label: 'VAT Paid',
+                    label: t('invoice.vat_paid'),
                     value: '0.00',
                     price: true,
                   },
                   {
-                    label: 'Total paid with VAT',
+                    label: t('invoice.total'),
                     value: payment.amount,
                     price: true,
                   },
@@ -141,7 +141,6 @@ module.exports = {
           });
       });
     } catch (err) {
-      console.log(err);
       return null;
     }
   },
