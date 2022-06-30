@@ -24,7 +24,7 @@
 cp .env.dist .env
 # 1. set up variables on .env
 # 2. add contract agreement template file to `templates/agreement.pdf`
-# 3. add invoice template file to `templates/invoice.xlsx` (you can copy the example one in `docs/invoice.xlsx`)
+# 3. replace the logo in `assets`
 ```
 
 ### Installation
