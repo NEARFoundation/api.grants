@@ -3,9 +3,6 @@ const { sha256 } = require('js-sha256');
 const nearApi = require('near-api-js');
 
 const verifyNearSignatureHeader = async (req, res, next) => {
-  req.near.accountId = 'sound.testnet';
-  next();
-  /*
   if (!req.near) {
     throw new Error('verifyNearSignatureHeader middleware should be used after the near middleware');
   }
@@ -38,7 +35,6 @@ const verifyNearSignatureHeader = async (req, res, next) => {
   }
 
   res.status(401).send('Unauthorized');
-  */
 };
 
 module.exports = verifyNearSignatureHeader;
