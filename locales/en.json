@@ -407,7 +407,8 @@
           "pending": "Pending",
           "paid": "Paid"
         },
-        "amount": "Amount"
+        "amount": "Amount",
+        "download": "Download Invoice"
       }
     },
     "agreements": {
