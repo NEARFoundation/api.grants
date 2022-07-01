@@ -12,6 +12,7 @@
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
+    "docx-templates": "^4.9.2",
     "dotenv": "^16.0.1",
     "express": "~4.16.1",
     "hellosign-sdk": "^2.1.0",

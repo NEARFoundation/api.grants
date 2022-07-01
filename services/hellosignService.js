@@ -3,24 +3,28 @@ const config = require('../config/hellosign');
 // eslint-disable-next-line import/order
 const hellosign = require('hellosign-sdk')({ key: config.apiKey });
 const logger = require('../utilities/logger');
+const generateContract = require('../utilities/generateContract');
 
 const options = {
   test_mode: config.testMode,
   clientId: config.appClientKey,
   subject: config.subject,
   message: config.message,
-  files: [config.templatePath],
 };
 
 module.exports = {
-  async createSignatureRequest(email, fullname) {
+  async createSignatureRequest(grantApplication) {
     try {
+      const { email, firstname, lastname } = grantApplication;
+      const contractPath = await generateContract(config.templatePath, grantApplication);
+
       const signatureRequest = await hellosign.signatureRequest.createEmbedded({
         ...options,
+        files: [contractPath],
         signers: [
           {
             email_address: email,
-            name: fullname,
+            name: `${firstname} ${lastname}`,
           },
         ],
       });

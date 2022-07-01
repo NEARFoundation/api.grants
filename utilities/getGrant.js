@@ -26,8 +26,7 @@ const getGrant = async (req, res) => {
       return;
     }
 
-    const { firstname, lastname, email } = grantApplication;
-    const fullname = `${firstname} ${lastname}`;
+    const { firstname, lastname } = grantApplication;
 
     // When the interview is scheduled but the interview had not been completed: get the date of the interview
     if (grantApplication.interviewUrl && !grantApplication.dateInterviewCompletionConfirmation) {
@@ -64,7 +63,7 @@ const getGrant = async (req, res) => {
 
     // When the KYC is approved: generate a signature request
     if (grantApplication.dateKycApproved && grantApplication.dateApproval && !grantApplication.helloSignSignatureRequestId) {
-      const { helloSignRequestId, helloSignSignatureRequestId, helloSignRequestUrl } = await hellosignService.createSignatureRequest(email, fullname);
+      const { helloSignRequestId, helloSignSignatureRequestId, helloSignRequestUrl } = await hellosignService.createSignatureRequest(grantApplication);
       grantApplication.helloSignSignatureRequestId = helloSignSignatureRequestId;
       grantApplication.helloSignRequestUrl = helloSignRequestUrl;
       grantApplication.helloSignRequestId = helloSignRequestId;
