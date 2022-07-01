@@ -1,6 +1,7 @@
 const nearApi = require('near-api-js');
 const getTokenId = require('../config/currency');
 const nearConfig = require('../config/near');
+const kycDaoConfig = require('../config/kycDaoConfig');
 
 module.exports = {
   async verifyTransaction(near, txHash, hashProposal, fundingAmount, nearId) {
@@ -48,6 +49,24 @@ module.exports = {
       return proposals;
     } catch (e) {
       return [];
+    }
+  },
+  async verifyKycDao(account, accountId) {
+    try {
+      const networkId = process.env.NEAR_NETWORK_ENV;
+      const { contractId } = kycDaoConfig.get(networkId);
+
+      const contract = new nearApi.Contract(account, contractId, {
+        viewMethods: ['ntnft_supply_for_owner'],
+        changeMethods: [],
+      });
+
+      const ntnftsKycDao = await contract.ntnft_supply_for_owner({ account_id: accountId });
+
+      return ntnftsKycDao > 0;
+    } catch (e) {
+      console.log(e);
+      return false;
     }
   },
 };

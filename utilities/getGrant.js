@@ -1,9 +1,12 @@
 const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicationModel');
 const calendlyService = require('../services/calendlyService');
 const hellosignService = require('../services/hellosignService');
+const nearService = require('../services/nearService');
 const getPayments = require('./getPayments');
 const hashProposal = require('./hashProposal');
 const grantConfig = require('../config/grant');
+
+// NOTE: This function should be refactored
 
 // eslint-disable-next-line max-lines-per-function
 const getGrant = async (req, res) => {
@@ -26,12 +29,25 @@ const getGrant = async (req, res) => {
     const { firstname, lastname, email } = grantApplication;
     const fullname = `${firstname} ${lastname}`;
 
+    // When the interview is scheduled but the interview had not been completed: get the date of the interview
     if (grantApplication.interviewUrl && !grantApplication.dateInterviewCompletionConfirmation) {
       const dateInterview = await calendlyService.getEventDate(grantApplication.interviewUrl);
       grantApplication.dateInterview = dateInterview;
       await grantApplication.save();
     }
 
+    // When the grant has been approved & the kyc not yet: check the status of the KYC
+    if (grantApplication.dateApproval && !grantApplication.dateKycApproved) {
+      const isKycApproved = await nearService.verifyKycDao(req.near.account, req.near.accountId);
+
+      if (isKycApproved) {
+        grantApplication.dateKycCompletion = new Date();
+        grantApplication.dateKycApproved = new Date();
+        await grantApplication.save();
+      }
+    }
+
+    // When the signature has been requested but the agreement not yet signed: check the state of the signature & update the url if needed
     if (grantApplication.helloSignSignatureRequestId && !grantApplication.dateAgreementSignature) {
       const { isCompleted } = await hellosignService.isRequestCompleted(grantApplication.helloSignRequestId);
       if (isCompleted) {
@@ -46,6 +62,7 @@ const getGrant = async (req, res) => {
       }
     }
 
+    // When the KYC is approved: generate a signature request
     if (grantApplication.dateKycApproved && grantApplication.dateApproval && !grantApplication.helloSignSignatureRequestId) {
       const { helloSignRequestId, helloSignSignatureRequestId, helloSignRequestUrl } = await hellosignService.createSignatureRequest(email, fullname);
       grantApplication.helloSignSignatureRequestId = helloSignSignatureRequestId;
@@ -54,6 +71,7 @@ const getGrant = async (req, res) => {
       await grantApplication.save();
     }
 
+    // When the agreement is signed create hash of the proposal so that the user can securely submit them
     if (grantApplication.dateAgreementSignature && !grantApplication.hashProposal) {
       const { fundingAmount, _id } = grantApplication;
 
@@ -78,6 +96,7 @@ const getGrant = async (req, res) => {
       await grantApplication.save();
     }
 
+    // When the transaction has been submitted get the payment status from all the proposals
     if (grantApplication.hashProposal) {
       const payments = await getPayments(grantApplication, req.near.account);
       grantApplication.payments = payments;
