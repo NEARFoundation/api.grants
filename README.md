@@ -15,6 +15,10 @@
 - Application framework: **[ExpressJS](https://expressjs.com/)**
 - Code quality: **[Eslint](https://eslint.org/), [Prettier](https://prettier.io/)**
 - Database: **[MongoDB](https://www.mongodb.com/)**
+- Docx Templating: **[docx-templates](https://github.com/guigrpa/docx-templates)**
+- Contract Signature: **[hellosign](https://github.com/HelloFax/hellosign-nodejs-sdk)**
+- KYC: **[KYC DAO](https://github.com/kycdao)**
+- Invoicing: **[Node microinvoice](https://github.com/baptistejamin/node-microinvoice)**
 
 ## Guides
 

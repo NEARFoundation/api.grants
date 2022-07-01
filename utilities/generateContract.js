@@ -1,27 +1,27 @@
 const fs = require('fs');
 const path = require('path');
 const { createReport } = require('docx-templates');
+const logger = require('./logger');
 
 const generateContract = async (templatePath, grantApplication) => {
   try {
     const template = fs.readFileSync(templatePath);
-    const { firstname } = grantApplication;
+    const { id, nearId } = grantApplication;
 
     const buffer = await createReport({
       template,
       cmdDelimiter: ['${', '}'],
       data: {
-        name: firstname,
-        hello: 'world',
+        ...grantApplication.toObject(),
       },
     });
 
-    const fileName = 'tmp/agreement.docx';
+    const fileName = `tmp/generated-agreement-${nearId}-${id}-${Date.now()}-${Math.floor(Math.random() * 100000)}.docx`;
     fs.writeFileSync(path.join(__dirname, '..', fileName), buffer);
 
     return fileName;
   } catch (err) {
-    console.log(err);
+    logger.error(err);
     return null;
   }
 };

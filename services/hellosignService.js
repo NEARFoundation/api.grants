@@ -34,6 +34,8 @@ module.exports = {
       const helloSignSignatureRequestId = signature.signature_id;
       const helloSignRequestUrl = await this.getSignatureRequestUrl(helloSignSignatureRequestId);
 
+      fs.unlinkSync(contractPath);
+
       return {
         helloSignSignatureRequestId,
         helloSignRequestUrl,
