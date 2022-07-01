@@ -28,7 +28,7 @@
 ```bash
 cp .env.dist .env
 # 1. set up variables on .env
-# 2. add contract agreement template file to `templates/agreement.pdf`
+# 2. update the template in templates/agreement.docx
 # 3. replace the logo in `assets`
 ```
 
