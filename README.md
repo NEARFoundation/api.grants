@@ -19,6 +19,7 @@
 - Contract Signature: **[hellosign](https://github.com/HelloFax/hellosign-nodejs-sdk)**
 - KYC: **[KYC DAO](https://github.com/kycdao)**
 - Invoicing: **[Node microinvoice](https://github.com/baptistejamin/node-microinvoice)**
+- Scheduling: **[Calendly](https://developer.calendly.com/)**
 
 ## Guides
 
