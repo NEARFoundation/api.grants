@@ -71,7 +71,6 @@ const GrantApplicationSchema = new Schema(
     helloSignSignatureRequestIdAdmin: String,
     helloSignRequestUrl: String,
     interviewUrl: String,
-    kycUrl: String,
     agreementUrl: String,
     invoiceUrl: String,
     reviewProject: String,
