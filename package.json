@@ -8,6 +8,7 @@
     "lint:fix": "eslint ./**/*.js --fix"
   },
   "dependencies": {
+    "@kycdao/kycdao-sdk": "^0.1.1",
     "axios": "^0.27.2",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
@@ -23,7 +24,7 @@
     "mongoose": "^6.3.6",
     "mongoose-sequence": "^5.3.1",
     "morgan": "~1.9.1",
-    "near-api-js": "^0.45.1",
+    "near-api-js": "^0.44.2",
     "winston": "^3.7.2",
     "zod": "^3.17.3"
   },

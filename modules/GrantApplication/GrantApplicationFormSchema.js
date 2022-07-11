@@ -6,6 +6,9 @@
 */
 
 const { z } = require('zod');
+const Countries = require('@kycdao/kycdao-sdk/dist/countries.list.json');
+
+const countryCodes = Countries.map((country) => country.iso_cca2);
 
 const preprocessDate = (arg) => {
   if (typeof arg === 'string' || arg instanceof Date) {
@@ -105,7 +108,7 @@ const createSchema = (t) =>
     hasPreviouslyReceivedFundingTokensGrantsFromNear: z.boolean(),
     aboutTokensReceivedFromNear: z.string().optional(),
 
-    addressCountry: z.string({ required_error: t('form.addressCountry.error') }).min(1, { message: t('form.addressCountry.error') }),
+    addressCountry: z.enum(countryCodes),
     addressCity: z.string({ required_error: t('form.addressCity.error') }).min(1, { message: t('form.addressCity.error') }),
     addressStreet: z.string({ required_error: t('form.addressStreet.error') }).min(1, { message: t('form.addressStreet.error') }),
     addressZip: z.string({ required_error: t('form.addressZip.error') }).min(1, { message: t('form.addressZip.error') }),
