@@ -3,6 +3,7 @@ const path = require('path');
 const { createReport } = require('docx-templates');
 const logger = require('./logger');
 const config = require('../config/hellosign');
+const getCountry = require('./getCountry');
 
 const generateContract = async (templatePath, grantApplication) => {
   try {
@@ -16,6 +17,7 @@ const generateContract = async (templatePath, grantApplication) => {
         ...grantApplication.toObject(),
         adminEmail: config.adminEmail,
         adminName: config.adminName,
+        addressCountryName: getCountry(grantApplication.addressCountry),
       },
     });
 
