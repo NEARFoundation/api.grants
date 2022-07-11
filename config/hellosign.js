@@ -7,6 +7,8 @@ const config = {
   subject: 'Grant Service Agreement',
   message: 'Please sign the Grant Service Agreement.',
   templatePath: path.join(__dirname, '../templates/agreement.docx'),
+  adminEmail: process.env.HELLO_SIGN_GRANT_ADMIN_EMAIL,
+  adminName: process.env.HELLO_SIGN_GRANT_ADMIN_NAME,
 };
 
 module.exports = config;

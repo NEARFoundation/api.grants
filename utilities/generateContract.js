@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { createReport } = require('docx-templates');
 const logger = require('./logger');
+const config = require('../config/hellosign');
 
 const generateContract = async (templatePath, grantApplication) => {
   try {
@@ -13,6 +14,8 @@ const generateContract = async (templatePath, grantApplication) => {
       cmdDelimiter: ['${', '}'],
       data: {
         ...grantApplication.toObject(),
+        adminEmail: config.adminEmail,
+        adminName: config.adminName,
       },
     });
 

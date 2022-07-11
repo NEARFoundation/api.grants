@@ -26,6 +26,10 @@ module.exports = {
             email_address: email,
             name: `${firstname} ${lastname}`,
           },
+          {
+            email_address: config.adminEmail,
+            name: config.adminName,
+          },
         ],
       });
 
