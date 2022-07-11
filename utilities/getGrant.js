@@ -26,8 +26,6 @@ const getGrant = async (req, res) => {
       return;
     }
 
-    const { firstname, lastname } = grantApplication;
-
     // When the interview is scheduled but the interview had not been completed: get the date of the interview
     if (grantApplication.interviewUrl && !grantApplication.dateInterviewCompletionConfirmation) {
       const dateInterview = await calendlyService.getEventDate(grantApplication.interviewUrl);
@@ -47,10 +45,10 @@ const getGrant = async (req, res) => {
     }
 
     // When the signature has been requested but the agreement not yet signed: check the state of the signature & update the url if needed
-    if (grantApplication.helloSignSignatureRequestId && !grantApplication.dateAgreementSignature) {
+    if (grantApplication.helloSignSignatureRequestId && (!grantApplication.dateAgreementSignatureGrantReceiver || !grantApplication.dateAgreementSignatureGrantGiver)) {
       const { isCompleted } = await hellosignService.isRequestCompleted(grantApplication.helloSignRequestId);
       if (isCompleted) {
-        grantApplication.dateAgreementSignature = new Date();
+        grantApplication.dateAgreementSignatureGrantReceiver = new Date();
         await grantApplication.save();
       } else {
         const helloSignRequestUrl = await hellosignService.getSignatureRequestUrl(grantApplication.helloSignSignatureRequestId);
@@ -71,7 +69,7 @@ const getGrant = async (req, res) => {
     }
 
     // When the agreement is signed create hash of the proposal so that the user can securely submit them
-    if (grantApplication.dateAgreementSignature && !grantApplication.hashProposal) {
+    if (grantApplication.dateAgreementSignatureGrantReceiver && !grantApplication.hashProposal) {
       const { fundingAmount, _id } = grantApplication;
 
       const grantApplicationWithSalt = await GrantApplicationModel.findOne({

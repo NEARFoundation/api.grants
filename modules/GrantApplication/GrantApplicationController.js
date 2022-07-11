@@ -166,7 +166,7 @@ module.exports = {
     try {
       const grantApplication = await getGrant(req, res);
 
-      if (!grantApplication.dateAgreementSignature || !grantApplication.helloSignRequestId) {
+      if (!grantApplication.dateAgreementSignatureGrantReceiver || !grantApplication.dateAgreementSignatureGrantGiver || !grantApplication.helloSignRequestId) {
         res.status(400).json({
           message: 'Agreement not signed',
         });
