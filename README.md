@@ -49,7 +49,7 @@ cp .env.dist .env
 
 #### Agreement signature
 
-> This route has been created as a workaround because it seems like the hellosign API doesn't allow to have one signer using the embedded widget and the other using the hello sign website
+> This route has been created as a workaround because it seems like the hellosign API doesn't allow to have one signer using the embedded widget and the other using the hello sign website; more info here: https://github.com/NEARWEEK/api.grants/issues/22#issuecomment-1180164237
 
 - Route: `/admin/:adminToken/accounts/:nearId/grants/:id/agreement/signature`
   - `adminToken`: ADMIN_TOKEN from the env variable to authorize the request
