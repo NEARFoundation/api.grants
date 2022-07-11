@@ -6,6 +6,7 @@
 
 - [ui.grants](https://github.com/NEARWEEK/ui.grants)
 - [api.grants](https://github.com/NEARWEEK/api.grants)
+- [admin.grants](https://github.com/NEARWEEK/admin.grants)
 
 ## Technology stack
 
