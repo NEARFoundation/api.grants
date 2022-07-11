@@ -1,21 +1,33 @@
 {
-  "name": "api.fund3r",
+  "name": "api.grants",
   "version": "0.1.0",
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "lint": "eslint ./**/*.js",
-    "lint:fix": "eslint ./**/*.js --fix"
+    "lint:fix": "eslint ./**/*.js --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@kycdao/kycdao-sdk": "^0.1.1",
+    "axios": "^0.27.2",
     "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
+    "docx-templates": "^4.9.2",
     "dotenv": "^16.0.1",
     "express": "~4.16.1",
+    "hellosign-sdk": "^2.1.0",
     "http-errors": "~1.6.3",
+    "i18n": "^0.15.0",
+    "js-sha256": "^0.9.0",
+    "microinvoice": "^1.0.5",
     "mongoose": "^6.3.6",
+    "mongoose-sequence": "^5.3.1",
     "morgan": "~1.9.1",
-    "winston": "^3.7.2"
+    "near-api-js": "^0.44.2",
+    "winston": "^3.7.2",
+    "zod": "^3.17.3"
   },
   "devDependencies": {
     "eslint": "^8.17.0",

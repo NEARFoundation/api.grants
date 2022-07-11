@@ -2,42 +2,77 @@ require('dotenv').config();
 
 const createError = require('http-errors');
 const express = require('express');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const cors = require('cors');
+const i18n = require('i18n');
+const path = require('path');
+
+const setUpNear = require('./utilities/setUpNear');
+const verifyNearSignatureHeader = require('./middlewares/verifyNearSignatureHeader');
 const logger = require('./utilities/logger');
-
 const config = require('./config/app');
+const near = require('./middlewares/near');
 
-mongoose.connect(config.mongoUrl);
-const db = mongoose.connection;
-db.on('error', logger.error.bind(logger, '[Mongodb] connection error'));
-db.once('open', () => {
-  logger.info('[Mongodb] Connected successfully');
+// Routes
+const grantApplicationRoutes = require('./modules/GrantApplication/GrantApplicationRoutes');
+const milestoneRoutes = require('./modules/Milestone/MilestoneRoutes');
+const invoiceRoutes = require('./modules/Invoice/InvoiceRoutes');
+const signatureRoutes = require('./modules/Signature/SignatureRoutes');
+
+// Options
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN,
+  optionsSuccessStatus: 200,
+};
+i18n.configure({
+  locales: ['en'],
+  directory: path.join(__dirname, 'locales'),
+  objectNotation: true,
 });
+const setup = async () => {
+  const app = express();
 
-const indexRouter = require('./routes/index');
+  // Set up mongodb
+  mongoose.connect(config.mongoUrl);
+  const db = mongoose.connection;
+  db.on('error', logger.error.bind(logger, '[Mongodb] connection error'));
+  db.once('open', () => {
+    logger.info('[Mongodb] Connected successfully');
+  });
 
-const app = express();
+  // Set up NEAR
+  const nearApi = await setUpNear();
 
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+  // Set up middlewares
+  app.use(morgan('dev'));
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  app.use(near(nearApi));
+  app.use(cors(corsOptions));
+  app.use(verifyNearSignatureHeader);
+  app.use(i18n.init);
 
-app.use('/', indexRouter);
+  // Set up routes
+  app.use('/api/v1/grants', grantApplicationRoutes);
+  app.use('/api/v1/grants', milestoneRoutes);
+  app.use('/', invoiceRoutes);
+  app.use('/', signatureRoutes);
 
-app.use((req, res, next) => {
-  next(createError(404));
-});
+  // Set up error catching
+  app.use((req, res, next) => {
+    next(createError(404));
+  });
+  app.use((err, req, res) => {
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');
+  });
 
-app.use((err, req, res) => {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error');
-});
+  return app;
+};
 
-module.exports = app;
+module.exports = setup;

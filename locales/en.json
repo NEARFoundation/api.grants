@@ -1,0 +1,448 @@
+{
+  "title": "Grant Application | FUND3R",
+  "form": {
+    "title": "Submission",
+    "description": {
+      "error": "form.description.error"
+    },
+    "applicationProjectDetailTitle": "Project Details",
+    "projectName": {
+      "label": "Project Name",
+      "placeholder": "Project Name",
+      "error": "Please enter a project name that is at least 1 characters long."
+    },
+    "grantType": {
+      "label": "Are you applying for a grant (non-equity) or venture funding (equity)?",
+      "placeholder": "Are you applying for a grant (non-equity) or venture funding (equity)?",
+      "error": "Please select a grant type."
+    },
+    "grantCategory": {
+      "label": "Grant Category",
+      "placeholder": "Grant Category",
+      "error": "Please select a grant category."
+    },
+    "projectUrl": {
+      "label": "Project Website URL",
+      "placeholder": "Project Website URL",
+      "error": "Please enter a valid URL."
+    },
+    "githubUrl": {
+      "label": "GitHub Project URL",
+      "placeholder": "GitHub Project URL",
+      "error": "Please enter a valid URL."
+    },
+    "projectStatus": {
+      "label": "How far is your project?*",
+      "placeholder": "How far is your project?*",
+      "error": "Please select a project status."
+    },
+    "projectLaunchDate": {
+      "label": "Project Launch Date",
+      "placeholder": "Project Launch Date",
+      "error": "Please enter a valid date."
+    },
+    "projectDescription": {
+      "label": "Project Description",
+      "placeholder": "Project Description",
+      "error": "Please enter a project description that is at least 1 characters long and less than 100."
+    },
+    "fundingAmount": {
+      "label": "How much initial funding do you need?",
+      "placeholder": "10000",
+      "error": "Please enter an initial funding amount that is at least 1 USN.",
+      "description": "Please specify the initial amount you are requesting in USN. Extra funding should be added as milestone. E.g. $50,000 * Grants will be given in USN value of NEAR tokens. (Benchmark: average grant <$50K USN)"
+    },
+    "milestoneTitle": "Milestone",
+    "budget": {
+      "label": "Estimated Budget",
+      "placeholder": "10000",
+      "error": "Please enter a budget that is at least 1 USN."
+    },
+    "deliveryDate": {
+      "label": "Estimated Delivery Date",
+      "placeholder": "Estimated Delivery Date",
+      "error": "Please enter a valid date."
+    },
+    "milestoneDescription": {
+      "label": "Milestone Description",
+      "placeholder": "Milestone Description",
+      "error": "Please enter a description that is at least 1 characters long and less than 100."
+    },
+    "whatAndWhy": {
+      "label": "What are you building & why?",
+      "placeholder": "What are you building & why?",
+      "error": "Please enter explanation that is at least 1 character long and less than 100."
+    },
+    "competitionDifference": {
+      "label": "What makes you different from your competitors?",
+      "placeholder": "What makes you different from your competitors?",
+      "error": "Please enter explanation that is at least 1 character long and less than 100."
+    },
+    "openSourceState": {
+      "label": "Is your project open-source?",
+      "placeholder": "Is your project open-source?",
+      "error": "Please select an open source status."
+    },
+    "opensourceComponentUse": {
+      "label": "Which components of the project will be open source?",
+      "placeholder": "Which components of the project will be open source?",
+      "error": "Please enter explanation that is at least 1 character long and less than 100.",
+      "description": "Please provide as much detail as possible."
+    },
+    "impactOnEcosystem": {
+      "label": "How will this impact the NEAR Ecosystem?",
+      "placeholder": "How will this impact the NEAR Ecosystem?",
+      "error": "Please enter explanation that is at least 1 character long and less than 1000."
+    },
+    "excitementNear": {
+      "label": "What makes you excited about NEAR?",
+      "placeholder": "What makes you excited about NEAR?",
+      "error": "Please enter explanation that is at least 1 character long and less than 1000."
+    },
+    "successMesurement": {
+      "label": "How will you measure project success?",
+      "placeholder": "How will you measure project success?",
+      "error": "Please enter explanation that is at least 1 character long.",
+      "description": "What will success look like for your project? An example can be number of sign ups, active users, total TVL, NEAR ecosystem impact etc."
+    },
+    "projectRaisingRound": {
+      "label": "Are you currently raising a round?",
+      "placeholder": "Are you currently raising a round?",
+      "error": "Please select a funding status."
+    },
+    "attachment": {
+      "label": "Do you have any documents to share with us? (Pitch Deck, Demo Video, ...)",
+      "placeholder": "Dropbox, Google Drive, or YouTube Link",
+      "error": "Please share a valid url."
+    },
+    "memmberDetailsTitle": "Member Details",
+    "firstname": {
+      "label": "First Name",
+      "placeholder": "First Name",
+      "error": "Please enter a first name that is at least 1 characters long."
+    },
+    "lastname": {
+      "label": "Last Name",
+      "placeholder": "Last Name",
+      "error": "Please enter a last name that is at least 1 characters long."
+    },
+    "dateOfBirth": {
+      "label": "Date of Birth",
+      "placeholder": "Date of Birth",
+      "error": "Please enter a valid date."
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Email",
+      "error": "Please enter a valid email."
+    },
+    "github": {
+      "label": "GitHub Profile URL",
+      "placeholder": "GitHub Profile URL",
+      "error": "Please enter a valid GitHub profile URL."
+    },
+    "twitter": {
+      "label": "Twitter Profile URL",
+      "placeholder": "Twitter Profile URL",
+      "error": "Please enter a valid Twitter profile URL."
+    },
+    "workingAloneOrTeam": {
+      "label": "Are you working alone or in a team?",
+      "placeholder": "Are you working alone or in a team?",
+      "error": "Please select a team status."
+    },
+    "aboutTeam": {
+      "label": "Tell us more about your rockstar team and your achievements*",
+      "placeholder": "Tell us more about your rockstar team and your achievements*",
+      "error": "Please enter a team description that is at least 1 characters long."
+    },
+    "membersGithubUrl": {
+      "label": "Github URL of Team Member",
+      "placeholder": "Github URL of Team Member",
+      "error": "Please enter a valid GitHub profile URL."
+    },
+    "hasPreviouslyReceivedFundingTokensGrantsFromNear": {
+      "label": "Previously received funding, tokens, or grants from NEAR.",
+      "placeholder": "Previously received funding, tokens, or grants from NEAR."
+    },
+    "aboutTokensReceivedFromNear": {
+      "label": "Tell us about your received funding, tokens, or grants from NEAR*",
+      "placeholder": "Tell us about your received funding, tokens, or grants from NEAR*",
+      "error": "Please enter explanation that is at least 1 character long and less than 100."
+    },
+    "addressDetailsTitle": "Address Details",
+    "addressCountry": {
+      "label": "Country",
+      "placeholder": "Country",
+      "error": "Please select a country."
+    },
+    "addressCity": {
+      "label": "City",
+      "placeholder": "City",
+      "error": "Please enter a city."
+    },
+    "addressStreet": {
+      "label": "Street",
+      "placeholder": "Street",
+      "error": "Please enter a street."
+    },
+    "addressZip": {
+      "label": "Zip",
+      "placeholder": "Zip",
+      "error": "Please enter a zip."
+    },
+    "howHeardGrants": {
+      "label": "How did you hear about the NEAR Grants Program?",
+      "placeholder": "How did you hear about the NEAR Grants Program?",
+      "error": "Please select a how did you hear about NEAR Grants.",
+      "description": "Please tell us how you found this program! Did you hack with us, see us in a newsletter, or something else?"
+    },
+    "referral": {
+      "label": "Did someone refer you to the NF Grants Program?",
+      "placeholder": "Did someone refer you to the NF Grants Program?"
+    },
+    "teamReferral": {
+      "label": "Do any of your team members self-identify as the following?",
+      "placeholder": "Do any of your team members self-identify as the following?"
+    },
+    "comments": {
+      "label": "Comments",
+      "placeholder": "Comments",
+      "error": "Please enter a comment that is at least 1 character long and less than 1000."
+    },
+    "team": {
+      "label": "Team Member {{ number }} Github URL"
+    },
+    "save": "Save draft",
+    "submit": "Submit application",
+    "draft_date": "Draft saved on ",
+    "addMilestone": "Add Milestone",
+    "labels": {
+      "equity": "Equity",
+      "non-equity": "Non-Equity",
+      "channel-brand-partnership": "Channel Brand / Partnership",
+      "daos": "DAOs",
+      "gaming-metaverse": "Gaming / Metaverse",
+      "infrastructure-wallets": "Infrastructure / Wallets",
+      "institutional-financial": "Institutional / Financial",
+      "nfts": "NFTs",
+      "social-impact": "Social Impact",
+      "other": "Other",
+      "mvp": "MVP",
+      "pre-alpha": "Pre-Alpha",
+      "alpha": "Alpha",
+      "beta": "Beta",
+      "live": "Live",
+      "fully-open-source": "Fully Open Source",
+      "partially-open-source": "Partially Open Source",
+      "closed-source": "Closed Source",
+      "working-alone": "Working Alone",
+      "working-with-team": "Working With Team",
+      "raising": "Yes",
+      "not-raising": "No"
+    },
+    "addTeamMember": "Add Team Member"
+  },
+  "blockchain": {
+    "description": "In order to continue the Grant Application request, you need to publish your grant application to the NEAR blockchain. In case you need assistance, please contact our team.",
+    "button": "Submit application"
+  },
+  "error": {
+    "tx_error": {
+      "title": "The transaction failed",
+      "description": "The transaction failed. Please try again."
+    },
+    "generic": {
+      "title": "The submission failed",
+      "description": "Please review the form errors below, and try again"
+    },
+    "form": {
+      "message": "Your form contains invalid values, please review and submit again"
+    }
+  },
+  "summary": {
+    "schedule": {
+      "title": "Overview"
+    }
+  },
+  "details": {
+    "header": {
+      "by": "By"
+    },
+    "common": {
+      "show_more": "Read more",
+      "show_less": "Show less"
+    },
+    "process-overview": {
+      "title": "Process Overview",
+      "submit": {
+        "title": "Submit your application"
+      },
+      "evaluation-approval": {
+        "title": "Evaluation & Approval",
+        "description": "The NEAR Foundation Funding Committee will review your application within two weeks. If your proposal meets the program criteria, you will be invited to an interview with two committee members."
+      },
+      "acceptance": {
+        "title": "Acceptance or Denial Notification",
+        "description": "All applicants will be notified whether their application has been accepted or denied. If your application is accepted, at this point, you will go through the agreement formation process."
+      },
+      "kyc": {
+        "title": "KYC"
+      },
+      "agreement": {
+        "title": "Signing of agreement"
+      },
+      "on-chain-submission": {
+        "title": "On-chain submission"
+      },
+      "payout": {
+        "title": "Upfront payout"
+      },
+      "onboarding": {
+        "title": "Onboarding",
+        "description": "Once all your paperwork is complete, your team will onboard to the NF Grants and Funding Program. We’ll align on clear timelines, accountability metrics, and reporting expectations. Finally, the NEAR Foundation Ecosystem Success team will be in contact with you to support your project till completion.",
+        "description-skip": "Once all your paperwork is complete, you will receive some onboarding instructions by email."
+      }
+    },
+    "payment-schedule": {
+      "title": "Payment schedule",
+      "launch": "Project launch",
+      "milestone": "Milestone",
+      "total": "Total requested"
+    },
+    "status-actions": {
+      "submitted": {
+        "message": "👍 You have successfully completed the application",
+        "description": "You will receive a follow up email to confirm your application has been received and separately when the review process has started. If you have questions that aren’t answered on near.org/grants, please contact us via email at grants@near.foundation."
+      },
+      "evaluated": {
+        "message": "You are invited to an interview. Please, select available date.",
+        "button": "Select date"
+      },
+      "interview-scheduled": {
+        "title": "Waiting for an interview"
+      },
+      "interview-completed": {
+        "title": "👍 You have successfully completed the interview",
+        "message": "You will receive a follow up email to confirm your application has been approved. If you have questions that aren’t answered on near.org/grants, please contact us via email at grants@near.foundation.,"
+      },
+      "denied": {
+        "message": "🤷‍♂️ Your application has been denied. Please, check comments and submit your application again."
+      },
+      "approved": {
+        "message": "👍 Your funding has been approved, please verify your account.",
+        "button": "Verify account",
+        "nft-message": "✨ In order to finish the KYC process, please mint your Sould Bound Token",
+        "nft-button": "Mint KYC SBT"
+      },
+      "kyc-completed": {
+        "title": "🧐 Thank you! We are currently checking your data",
+        "description": "We will send you an email once your account has been confirmed. It can take a few days..."
+      },
+      "kyc-approved": {
+        "message": "👍 Your account has been approved. To continue please sign the grant agreement.",
+        "button": "Sign agreement"
+      },
+      "kyc-denied": {
+        "message": "🤷‍♂️ Sorry, the KYC has been denied",
+        "button": "Submit KYC again"
+      },
+      "agreement-signed": {
+        "message": "👍 You successfully signed the agreement"
+      },
+      "submitted-onchain": {
+        "message": "👍 You have successfully completed the application. You will receive soon the first payout."
+      },
+      "first-payment-sent": {
+        "message": "👍 We have successfully completed the first payment. The team will contact you soon for the onboarding process."
+      }
+    },
+    "milestones": {
+      "title": "Let’s start to work",
+      "milestone": {
+        "working": "Working on Milestone {{ number }}",
+        "status": {
+          "submit": "Submit",
+          "review": "Review",
+          "payout": "Payout"
+        }
+      },
+      "waiting-submit": {
+        "message": "Let us know when you are done with Milestone {{ number }} and we will start the review.",
+        "button": "Submit Milestone {{ number }}"
+      },
+      "waiting-blockchain": {
+        "message": "Please submit your milestone to the DAO",
+        "button": "Submit Milestone {{ number }} on NEAR"
+      },
+      "waiting-booking": {
+        "message": "Please book your interview with our team in order to validate your milestone",
+        "button": "Book interview"
+      },
+      "rejection": {
+        "message": "Your milestone application has been denied. Please, check comments and submit your application again."
+      },
+      "submitted": {
+        "message": "Please attend your interview with our team in order to validate your milestone."
+      }
+    },
+    "project": {
+      "tab": "Project Details",
+      "requested": "Requested",
+      "launch": "Launch date",
+      "project-url": "Project Website URL",
+      "github-url": "Github Project URL",
+      "milestone": {
+        "title": "Milestone {{ number }}",
+        "budget": "Estimated budget",
+        "date": "Expected delivery date",
+        "description": "Milesone description"
+      }
+    },
+    "payments": {
+      "tab": "Payments",
+      "payment": {
+        "title": "Payment",
+        "statuses": {
+          "pending": "Pending",
+          "paid": "Paid"
+        },
+        "amount": "Amount",
+        "download": "Download Invoice"
+      }
+    },
+    "agreements": {
+      "title": "Agreements",
+      "filename": "agreement.zip"
+    },
+    "attachment": {
+      "title": "Additional File(s)"
+    },
+    "member": {
+      "title": "Member(s) details"
+    },
+    "address": {
+      "title": "Address details"
+    },
+    "comments": {
+      "no-comments": "No comments posted yet"
+    }
+  },
+  "invoice": {
+    "title": "Invoice",
+    "number": "Invoice Number",
+    "status": "Status",
+    "date": "Date",
+    "to": "Bill To",
+    "from": "Bill From",
+    "near_account": "NEAR Account Id: ",
+    "description": "Description",
+    "quantity": "Quantity",
+    "subtotal": "Subtotal",
+    "grant_for": "Grant for",
+    "without_vat": "Total without VAT",
+    "vat_rate": "VAT Rate",
+    "vat_paid": "VAT Paid",
+    "total": "Total paid with VAT"
+  }
+}
