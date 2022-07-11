@@ -46,9 +46,11 @@ const getGrant = async (req, res) => {
 
     // When the signature has been requested but the agreement not yet signed: check the state of the signature & update the url if needed
     if (grantApplication.helloSignSignatureRequestId && (!grantApplication.dateAgreementSignatureGrantReceiver || !grantApplication.dateAgreementSignatureGrantGiver)) {
-      const { isCompleted } = await hellosignService.isRequestCompleted(grantApplication.helloSignRequestId);
-      if (isCompleted) {
-        grantApplication.dateAgreementSignatureGrantReceiver = new Date();
+      const { dateAgreementSignatureGrantReceiver, dateAgreementSignatureGrantGiver } = await hellosignService.isRequestCompleted(grantApplication.helloSignRequestId);
+
+      if (dateAgreementSignatureGrantReceiver || dateAgreementSignatureGrantGiver) {
+        grantApplication.dateAgreementSignatureGrantReceiver = dateAgreementSignatureGrantReceiver;
+        grantApplication.dateAgreementSignatureGrantGiver = dateAgreementSignatureGrantGiver;
         await grantApplication.save();
       } else {
         const helloSignRequestUrl = await hellosignService.getSignatureRequestUrl(grantApplication.helloSignSignatureRequestId);

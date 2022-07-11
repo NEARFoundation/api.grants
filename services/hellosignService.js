@@ -68,8 +68,12 @@ module.exports = {
     try {
       const signatureRequest = await hellosign.signatureRequest.get(helloSignRequestId);
 
+      const dateAgreementSignatureGrantReceiver = signatureRequest.signature_request.signatures[0].status_code === 'signed' ? new Date() : null;
+      const dateAgreementSignatureGrantGiver = signatureRequest.signature_request.signatures[1].status_code === 'signed' ? new Date() : null;
+
       return {
-        isCompleted: signatureRequest.signature_request.is_complete,
+        dateAgreementSignatureGrantReceiver,
+        dateAgreementSignatureGrantGiver,
       };
     } catch (err) {
       return {
