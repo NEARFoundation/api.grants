@@ -33,15 +33,16 @@ module.exports = {
         ],
       });
 
-      const signature = signatureRequest.signature_request.signatures[0];
       const helloSignRequestId = signatureRequest.signature_request.signature_request_id;
-      const helloSignSignatureRequestId = signature.signature_id;
+      const helloSignSignatureRequestId = signatureRequest.signature_request.signatures[0].signature_id;
+      const helloSignSignatureRequestIdAdmin = signatureRequest.signature_request.signatures[1].signature_id;
       const helloSignRequestUrl = await this.getSignatureRequestUrl(helloSignSignatureRequestId);
 
       fs.unlinkSync(contractPath);
 
       return {
         helloSignSignatureRequestId,
+        helloSignSignatureRequestIdAdmin,
         helloSignRequestUrl,
         helloSignRequestId,
       };

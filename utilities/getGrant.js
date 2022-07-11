@@ -62,9 +62,12 @@ const getGrant = async (req, res) => {
     }
 
     // When the KYC is approved: generate a signature request
-    if (grantApplication.dateKycApproved && grantApplication.dateApproval && !grantApplication.helloSignSignatureRequestId) {
-      const { helloSignRequestId, helloSignSignatureRequestId, helloSignRequestUrl } = await hellosignService.createSignatureRequest(grantApplication);
+    if (grantApplication.dateKycApproved && grantApplication.dateApproval && !grantApplication.helloSignSignatureRequestId && !grantApplication.helloSignSignatureRequestIdAdmin) {
+      const { helloSignRequestId, helloSignSignatureRequestId, helloSignRequestUrl, helloSignSignatureRequestIdAdmin } = await hellosignService.createSignatureRequest(
+        grantApplication,
+      );
       grantApplication.helloSignSignatureRequestId = helloSignSignatureRequestId;
+      grantApplication.helloSignSignatureRequestIdAdmin = helloSignSignatureRequestIdAdmin;
       grantApplication.helloSignRequestUrl = helloSignRequestUrl;
       grantApplication.helloSignRequestId = helloSignRequestId;
       await grantApplication.save();
