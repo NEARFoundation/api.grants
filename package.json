@@ -1,11 +1,12 @@
 {
-  "name": "api.fund3r",
+  "name": "api.grants",
   "version": "0.1.0",
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
     "lint": "eslint ./**/*.js",
-    "lint:fix": "eslint ./**/*.js --fix"
+    "lint:fix": "eslint ./**/*.js --fix",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
     "@kycdao/kycdao-sdk": "^0.1.1",
