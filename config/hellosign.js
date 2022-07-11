@@ -6,7 +6,7 @@ const config = {
   testMode: parseInt(process.env.HELLO_SIGN_TEST_MODE, 10),
   subject: 'Grant Service Agreement',
   message: 'Please sign the Grant Service Agreement.',
-  templatePath: path.join(__dirname, '../templates/agreement.docx'),
+  templatePath: path.join(__dirname, '..', process.env.HELLO_SIGN_TEMPLATE),
   adminEmail: process.env.HELLO_SIGN_GRANT_ADMIN_EMAIL,
   adminName: process.env.HELLO_SIGN_GRANT_ADMIN_NAME,
 };
