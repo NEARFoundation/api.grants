@@ -71,7 +71,7 @@ const getGrant = async (req, res) => {
     }
 
     // When the agreement is signed create hash of the proposal so that the user can securely submit them
-    if (grantApplication.dateAgreementSignatureGrantReceiver && !grantApplication.hashProposal) {
+    if (grantApplication.dateAgreementSignatureGrantReceiver && grantApplication.dateAgreementSignatureGrantGiver && !grantApplication.hashProposal) {
       const { fundingAmount, _id } = grantApplication;
 
       const grantApplicationWithSalt = await GrantApplicationModel.findOne({
