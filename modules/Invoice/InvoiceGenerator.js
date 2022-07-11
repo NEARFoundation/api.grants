@@ -1,6 +1,7 @@
 /* eslint-disable max-lines-per-function */
 const path = require('path');
 const MicroInvoice = require('microinvoice');
+const getCountry = require('../../utilities/getCountry');
 
 module.exports = {
   async createInvoice({ filename, payment, grantApplication, invoiceId, invoiceConfig, t }) {
@@ -49,10 +50,10 @@ module.exports = {
                   label: t('invoice.from'),
                   value: [
                     `${grantApplication.firstname} ${grantApplication.lastname}`,
-                    grantApplication.addressCountry,
+                    grantApplication.addressZip,
                     grantApplication.addressCity,
                     grantApplication.addressStreet,
-                    grantApplication.addressZip,
+                    getCountry(grantApplication.addressCountry),
                     grantApplication.email,
                   ],
                 },
