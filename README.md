@@ -35,7 +35,7 @@ cp .env.dist .env
 
 ### Special routes for admin
 
-> These special routes should be moved to the admin panel with a better security. They are prottected by a secret URL using ADMIN_TOKEN and basic auth using ADMIN_LOGIN and ADMIN_PASSWORD
+> These special routes should be moved to the admin panel with a better security. They are protected by a secret URL using ADMIN_TOKEN and basic auth using ADMIN_LOGIN and ADMIN_PASSWORD
 
 #### Invoice downloading
 
