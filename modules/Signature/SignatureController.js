@@ -2,6 +2,7 @@ const getGrant = require('../../utilities/getGrant');
 const hellosignConfig = require('../../config/hellosign');
 const hellosignService = require('../../services/hellosignService');
 const { reportError } = require('../../services/errorReportingService');
+const logger = require('../../utilities/logger');
 
 /**
  * SignatureController.js
@@ -11,6 +12,7 @@ const { reportError } = require('../../services/errorReportingService');
 module.exports = {
   async embeddedSignature(req, res) {
     try {
+      logger.info('Getting signature page for admin');
       const grantApplication = await getGrant(req, res);
       const { appClientKey } = hellosignConfig;
 

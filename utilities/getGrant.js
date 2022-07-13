@@ -6,6 +6,7 @@ const getPayments = require('./getPayments');
 const hashProposal = require('./hashProposal');
 const grantConfig = require('../config/grant');
 const { reportError } = require('../services/errorReportingService');
+const logger = require('./logger');
 
 // NOTE: This function should be refactored
 
@@ -14,6 +15,8 @@ const getGrant = async (req, res) => {
   try {
     const { id } = req.params;
     const { accountId: nearId } = req.near;
+
+    logger.info('Getting grant', { nearId, id });
 
     const grantApplication = await GrantApplicationModel.findOne({
       id,

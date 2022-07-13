@@ -1,11 +1,14 @@
 const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicationModel');
 const { reportError } = require('../services/errorReportingService');
+const logger = require('./logger');
 
 // eslint-disable-next-line max-lines-per-function
 const loadAndVerifyMilestoneAndGrant = async (req, res) => {
   try {
     const { id, milestoneId } = req.params;
     const { accountId: nearId } = req.near;
+
+    logger.info('Verifying milestone and save data', { nearId, id, milestoneId });
 
     const grantApplication = await GrantApplicationModel.findOne({
       id,

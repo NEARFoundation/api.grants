@@ -4,9 +4,11 @@ const { createReport } = require('docx-templates');
 const config = require('../config/hellosign');
 const getCountry = require('./getCountry');
 const { reportError } = require('../services/errorReportingService');
+const logger = require('./logger');
 
 const generateContract = async (templatePath, grantApplication) => {
   try {
+    logger.info('Generating contract', { nearId: grantApplication.nearId });
     const template = fs.readFileSync(templatePath);
     const { id, nearId } = grantApplication;
 

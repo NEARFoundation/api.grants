@@ -11,6 +11,7 @@ const grantConfig = require('../../config/grant');
 const hellosignService = require('../../services/hellosignService');
 const nearService = require('../../services/nearService');
 const { reportError } = require('../../services/errorReportingService');
+const logger = require('../../utilities/logger');
 
 /**
  * GrantApplicationController.js
@@ -21,6 +22,8 @@ module.exports = {
   async list(req, res) {
     try {
       const { accountId: nearId } = req.near;
+
+      logger.info('Listing grant applications', { nearId });
 
       const grantApplications = await GrantApplicationModel.find({
         nearId,
@@ -53,6 +56,8 @@ module.exports = {
 
   async show(req, res) {
     try {
+      const { accountId: nearId } = req.near;
+      logger.info('Showing grant application', { nearId });
       const grantApplication = await getGrant(req, res);
       res.json(grantApplication);
     } catch (error) {
@@ -66,6 +71,9 @@ module.exports = {
   // eslint-disable-next-line max-lines-per-function
   async saveDraft(req, res) {
     try {
+      const { accountId: nearId } = req.near;
+      logger.info('Saving draft grant application', { nearId });
+
       const grantApplication = await getVerifyAndSaveGrantData(req, res);
       await grantApplication.save();
 
@@ -81,6 +89,9 @@ module.exports = {
 
   async submit(req, res) {
     try {
+      const { accountId: nearId } = req.near;
+      logger.info('Submitting grant application', { nearId });
+
       const grantApplication = await getVerifyAndSaveGrantData(req, res);
 
       // eslint-disable-next-line no-underscore-dangle
@@ -125,6 +136,9 @@ module.exports = {
 
   async setInterview(req, res) {
     try {
+      const { accountId: nearId } = req.near;
+      logger.info('Setting interview for grant application', { nearId });
+
       const grantApplication = await getGrant(req, res);
       const { accountId, near } = req.near;
 
@@ -170,6 +184,9 @@ module.exports = {
 
   async downloadAgreement(req, res) {
     try {
+      const { accountId: nearId } = req.near;
+      logger.info('Downloading agreement for grant application', { nearId });
+
       const grantApplication = await getGrant(req, res);
 
       if (!grantApplication.dateAgreementSignatureGrantReceiver || !grantApplication.dateAgreementSignatureGrantGiver || !grantApplication.helloSignRequestId) {
@@ -195,6 +212,9 @@ module.exports = {
 
   async validateAndSaveTransactionHash(req, res) {
     try {
+      const { accountId } = req.near;
+      logger.info('Validating and saving transaction hash for grant application', { nearId: accountId });
+
       const grantApplication = await getGrant(req, res);
 
       if (grantApplication.proposalNearTransactionHash) {

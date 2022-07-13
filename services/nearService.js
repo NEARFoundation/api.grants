@@ -3,10 +3,12 @@ const getTokenId = require('../config/currency');
 const nearConfig = require('../config/near');
 const kycDaoConfig = require('../config/kycDaoConfig');
 const { reportError } = require('./errorReportingService');
+const logger = require('../utilities/logger');
 
 module.exports = {
   async verifyTransaction(near, txHash, hashProposal, fundingAmount, nearId) {
     try {
+      logger.info('Verifying transaction', { nearId, txHash });
       const networkId = process.env.NEAR_NETWORK_ENV;
 
       const txStatus = await near.connection.provider.txStatus(txHash, nearId);
@@ -40,6 +42,7 @@ module.exports = {
   },
   async loadProposals(account) {
     try {
+      logger.info('Loading proposals', { account });
       const contract = new nearApi.Contract(account, nearConfig.contractId, {
         viewMethods: ['get_proposals'],
         changeMethods: [],
@@ -56,6 +59,7 @@ module.exports = {
   },
   async verifyKycDao(account, accountId) {
     try {
+      logger.info('Verifying kycDao', { account, accountId });
       const networkId = process.env.NEAR_NETWORK_ENV;
       const { contractId } = kycDaoConfig.get(networkId);
 

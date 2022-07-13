@@ -3,6 +3,7 @@ const getGrant = require('../../utilities/getGrant');
 const invoiceConfig = require('../../config/invoice');
 const InvoiceGenerator = require('./InvoiceGenerator');
 const { reportError } = require('../../services/errorReportingService');
+const logger = require('../../utilities/logger');
 
 /**
  * InvoiceController.js
@@ -12,9 +13,10 @@ const { reportError } = require('../../services/errorReportingService');
 module.exports = {
   async download(req, res) {
     try {
-      const grantApplication = await getGrant(req, res);
       const { invoiceId } = req.params;
+      logger.info('Downloading invoice', { invoiceId });
 
+      const grantApplication = await getGrant(req, res);
       const payment = grantApplication.payments[invoiceId];
 
       if (!payment) {

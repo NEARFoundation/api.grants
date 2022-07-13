@@ -4,6 +4,7 @@ const config = require('../config/hellosign');
 const hellosign = require('hellosign-sdk')({ key: config.apiKey });
 const { reportError } = require('./errorReportingService');
 const generateContract = require('../utilities/generateContract');
+const logger = require('../utilities/logger');
 
 const options = {
   test_mode: config.testMode,
@@ -15,6 +16,7 @@ const options = {
 module.exports = {
   async createSignatureRequest(grantApplication) {
     try {
+      logger.info('Creating signature request', { nearId: grantApplication.nearId });
       const { email, firstname, lastname } = grantApplication;
       const contractPath = await generateContract(config.templatePath, grantApplication);
 
@@ -57,6 +59,8 @@ module.exports = {
   },
   async getSignatureRequestUrl(helloSignSignatureRequestId) {
     try {
+      logger.info('Getting signature request url', { helloSignSignatureRequestId });
+
       const helloSignUrlRequest = await hellosign.embedded.getSignUrl(helloSignSignatureRequestId);
       const helloSignRequestUrl = helloSignUrlRequest.embedded.sign_url;
 
@@ -68,6 +72,7 @@ module.exports = {
   },
   async isRequestCompleted(helloSignRequestId) {
     try {
+      logger.info('Checking if signature request is completed', { helloSignRequestId });
       const signatureRequest = await hellosign.signatureRequest.get(helloSignRequestId);
 
       const dateAgreementSignatureGrantReceiver = signatureRequest.signature_request.signatures[0].status_code === 'signed' ? new Date() : null;
@@ -87,6 +92,7 @@ module.exports = {
   },
   async downloadAgreement(helloSignRequestId) {
     try {
+      logger.info('Downloading agreement', { helloSignRequestId });
       return new Promise((resolve) => {
         hellosign.signatureRequest.download(helloSignRequestId, { file_type: 'zip' }, (err, res) => {
           const fileName = `tmp/agreements-${Date.now()}-${Math.floor(Math.random() * 100000)}-${helloSignRequestId}.zip`;
