@@ -13,8 +13,10 @@ const logger = winston.createLogger({
   format: winston.format.combine(
     enumerateErrorFormat(),
     config.env === 'development' ? winston.format.colorize() : winston.format.uncolorize(),
-    winston.format.splat(),
-    winston.format.printf(({ level, message }) => `${level}: ${message}`),
+    winston.format.timestamp({
+      format: 'YYYY-MM-DD HH:mm:ss',
+    }),
+    winston.format.printf(({ timestamp, level, message, ...info }) => `${timestamp} ${level}: ${message} | ${JSON.stringify(info)}`),
   ),
   transports: [
     new winston.transports.Console({
