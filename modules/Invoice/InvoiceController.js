@@ -2,6 +2,8 @@ const fs = require('fs');
 const getGrant = require('../../utilities/getGrant');
 const invoiceConfig = require('../../config/invoice');
 const InvoiceGenerator = require('./InvoiceGenerator');
+const { reportError } = require('../../services/errorReportingService');
+const logger = require('../../utilities/logger');
 
 /**
  * InvoiceController.js
@@ -11,9 +13,10 @@ const InvoiceGenerator = require('./InvoiceGenerator');
 module.exports = {
   async download(req, res) {
     try {
-      const grantApplication = await getGrant(req, res);
       const { invoiceId } = req.params;
+      logger.info('Downloading invoice', { invoiceId });
 
+      const grantApplication = await getGrant(req, res);
       const payment = grantApplication.payments[invoiceId];
 
       if (!payment) {
@@ -33,9 +36,10 @@ module.exports = {
       res.download(invoicePath, filename, () => {
         fs.unlinkSync(invoicePath);
       });
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not get download invoice');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },

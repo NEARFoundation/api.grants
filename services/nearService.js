@@ -2,10 +2,13 @@ const nearApi = require('near-api-js');
 const getTokenId = require('../config/currency');
 const nearConfig = require('../config/near');
 const kycDaoConfig = require('../config/kycDaoConfig');
+const { reportError } = require('./errorReportingService');
+const logger = require('../utilities/logger');
 
 module.exports = {
   async verifyTransaction(near, txHash, hashProposal, fundingAmount, nearId) {
     try {
+      logger.info('Verifying transaction', { nearId, txHash });
       const networkId = process.env.NEAR_NETWORK_ENV;
 
       const txStatus = await near.connection.provider.txStatus(txHash, nearId);
@@ -32,12 +35,14 @@ module.exports = {
       /* eslint-enable camelcase */
 
       return false;
-    } catch (e) {
+    } catch (error) {
+      reportError(error, 'Could not verify transaction from NEAR');
       return false;
     }
   },
   async loadProposals(account) {
     try {
+      logger.info('Getting proposals to check their status');
       const contract = new nearApi.Contract(account, nearConfig.contractId, {
         viewMethods: ['get_proposals'],
         changeMethods: [],
@@ -47,12 +52,14 @@ module.exports = {
       const proposals = await contract.get_proposals({ from_index: 0, limit: 100000000 });
 
       return proposals;
-    } catch (e) {
+    } catch (error) {
+      reportError(error, 'Could not load proposal from NEAR');
       return [];
     }
   },
   async verifyKycDao(account, accountId) {
     try {
+      logger.info('Verifying kycDao', { account, accountId });
       const networkId = process.env.NEAR_NETWORK_ENV;
       const { contractId } = kycDaoConfig.get(networkId);
 
@@ -64,8 +71,8 @@ module.exports = {
       const ntnftsKycDao = await contract.ntnft_supply_for_owner({ account_id: accountId });
 
       return ntnftsKycDao > 0;
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      reportError(error, 'Could not verify kyc dao status');
       return false;
     }
   },

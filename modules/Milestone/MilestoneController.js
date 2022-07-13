@@ -4,6 +4,8 @@ const verifySignatureOfObject = require('../../utilities/verifySignatureOfObject
 const verifySignatureOfString = require('../../utilities/verifySignatureOfString');
 const calendlyService = require('../../services/calendlyService');
 const nearService = require('../../services/nearService');
+const { reportError } = require('../../services/errorReportingService');
+const logger = require('../../utilities/logger');
 
 /**
  * MilestoneController.js
@@ -15,6 +17,8 @@ module.exports = {
     try {
       const { accountId: nearId, near } = req.near;
       const { signedData, milestoneData } = req.body;
+
+      logger.info('Updating milestone', { nearId });
 
       const { milestone, grantApplication } = await loadAndVerifyMilestoneAndGrant(req, res);
 
@@ -61,15 +65,19 @@ module.exports = {
       await grantApplication.save();
 
       res.json(grantApplication);
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not submit milestone');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },
 
   async validateAndSaveTransactionHash(req, res) {
     try {
+      const { accountId } = req.near;
+      logger.info('Validating transaction hash for milestone', { nearId: accountId });
+
       const { milestone, grantApplication } = await loadAndVerifyMilestoneAndGrant(req, res);
 
       if (!milestone.dateSubmission) {
@@ -106,17 +114,20 @@ module.exports = {
       await grantApplication.save();
 
       res.json(grantApplication);
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not validate transaction hash of milestone');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },
 
   async setInterview(req, res) {
     try {
-      const { milestone, grantApplication } = await loadAndVerifyMilestoneAndGrant(req, res);
       const { accountId, near } = req.near;
+      logger.info('Setting interview for milestone', { nearId: accountId });
+
+      const { milestone, grantApplication } = await loadAndVerifyMilestoneAndGrant(req, res);
 
       if (milestone.interviewUrl) {
         res.status(400).json({
@@ -149,9 +160,10 @@ module.exports = {
       await grantApplication.save();
 
       res.json(grantApplication);
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not set interview of milestone');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },

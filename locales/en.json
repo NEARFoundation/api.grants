@@ -280,7 +280,7 @@
       },
       "evaluation-approval": {
         "title": "Evaluation & Approval",
-        "description": "The NEAR Foundation Funding Committee will review your application within two weeks. If your proposal meets the program criteria, you will be invited to an interview with two committee members."
+        "description": "The FUND3R team will review your application within two weeks. If your proposal meets the program criteria, you will be invited to an interview with two committee members."
       },
       "acceptance": {
         "title": "Acceptance or Denial Notification",
@@ -300,7 +300,7 @@
       },
       "onboarding": {
         "title": "Onboarding",
-        "description": "Once all your paperwork is complete, your team will onboard to the NF Grants and Funding Program. We’ll align on clear timelines, accountability metrics, and reporting expectations. Finally, the NEAR Foundation Ecosystem Success team will be in contact with you to support your project till completion.",
+        "description": "Once all your paperwork is complete, your team will onboard to the NF Grants and Funding Program. We’ll align on clear timelines, accountability metrics, and reporting expectations. Finally, the FUND3R team will be in contact with you to support your project till completion.",
         "description-skip": "Once all your paperwork is complete, you will receive some onboarding instructions by email."
       }
     },

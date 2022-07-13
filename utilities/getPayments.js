@@ -2,6 +2,7 @@ const nearService = require('../services/nearService');
 const hashProposal = require('./hashProposal');
 const config = require('../config/app');
 const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicationModel');
+const { reportError } = require('../services/errorReportingService');
 
 const getPayments = async (grantApplication, nearAccount) => {
   try {
@@ -64,7 +65,8 @@ const getPayments = async (grantApplication, nearAccount) => {
     });
 
     return payments;
-  } catch (err) {
+  } catch (error) {
+    reportError(error, 'Could not get the payments from this grant application');
     return [];
   }
 };

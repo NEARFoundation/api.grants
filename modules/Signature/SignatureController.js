@@ -1,6 +1,8 @@
 const getGrant = require('../../utilities/getGrant');
 const hellosignConfig = require('../../config/hellosign');
 const hellosignService = require('../../services/hellosignService');
+const { reportError } = require('../../services/errorReportingService');
+const logger = require('../../utilities/logger');
 
 /**
  * SignatureController.js
@@ -10,6 +12,7 @@ const hellosignService = require('../../services/hellosignService');
 module.exports = {
   async embeddedSignature(req, res) {
     try {
+      logger.info('Getting signature page for admin');
       const grantApplication = await getGrant(req, res);
       const { appClientKey } = hellosignConfig;
 
@@ -35,16 +38,17 @@ module.exports = {
             try {
               client.open('${signatureRequestUrl}');
             }
-            catch (err) {
-              console.log(err);
-              alert('Error: ' + err.message);
+            catch (error) {
+              console.log(error);
+              alert('Error: ' + error.message);
             }
           </script>
         </body>
       </html>`);
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not set embedded signature for admin');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },

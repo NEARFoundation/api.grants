@@ -10,6 +10,8 @@ const getGrant = require('../../utilities/getGrant');
 const grantConfig = require('../../config/grant');
 const hellosignService = require('../../services/hellosignService');
 const nearService = require('../../services/nearService');
+const { reportError } = require('../../services/errorReportingService');
+const logger = require('../../utilities/logger');
 
 /**
  * GrantApplicationController.js
@@ -20,6 +22,8 @@ module.exports = {
   async list(req, res) {
     try {
       const { accountId: nearId } = req.near;
+
+      logger.info('Listing grant applications', { nearId });
 
       const grantApplications = await GrantApplicationModel.find({
         nearId,
@@ -42,20 +46,24 @@ module.exports = {
       }
 
       res.json(grantApplications);
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not get list grant applications');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },
 
   async show(req, res) {
     try {
+      const { accountId: nearId } = req.near;
+      logger.info('Showing grant application', { nearId });
       const grantApplication = await getGrant(req, res);
       res.json(grantApplication);
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not get grant applications');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },
@@ -63,11 +71,15 @@ module.exports = {
   // eslint-disable-next-line max-lines-per-function
   async saveDraft(req, res) {
     try {
+      const { accountId: nearId } = req.near;
+      logger.info('Saving draft grant application', { nearId });
+
       const grantApplication = await getVerifyAndSaveGrantData(req, res);
       await grantApplication.save();
 
       res.json(grantApplication);
     } catch (error) {
+      reportError(error, 'Could not save draft');
       res.status(500).json({
         message: 'Error when updating grantApplication.',
         error,
@@ -77,6 +89,9 @@ module.exports = {
 
   async submit(req, res) {
     try {
+      const { accountId: nearId } = req.near;
+      logger.info('Submitting grant application', { nearId });
+
       const grantApplication = await getVerifyAndSaveGrantData(req, res);
 
       // eslint-disable-next-line no-underscore-dangle
@@ -111,6 +126,7 @@ module.exports = {
 
       res.json(grantApplication);
     } catch (error) {
+      reportError(error, 'Could not submit grant application');
       res.status(500).json({
         message: 'Error when updating grantApplication.',
         error,
@@ -120,6 +136,9 @@ module.exports = {
 
   async setInterview(req, res) {
     try {
+      const { accountId: nearId } = req.near;
+      logger.info('Setting interview for grant application', { nearId });
+
       const grantApplication = await getGrant(req, res);
       const { accountId, near } = req.near;
 
@@ -155,6 +174,7 @@ module.exports = {
 
       res.json(grantApplication);
     } catch (error) {
+      reportError(error, 'Could not set interview');
       res.status(500).json({
         message: 'Error when updating grantApplication',
         error,
@@ -164,6 +184,9 @@ module.exports = {
 
   async downloadAgreement(req, res) {
     try {
+      const { accountId: nearId } = req.near;
+      logger.info('Downloading agreement for grant application', { nearId });
+
       const grantApplication = await getGrant(req, res);
 
       if (!grantApplication.dateAgreementSignatureGrantReceiver || !grantApplication.dateAgreementSignatureGrantGiver || !grantApplication.helloSignRequestId) {
@@ -179,6 +202,7 @@ module.exports = {
         fs.unlinkSync(fileName);
       });
     } catch (error) {
+      reportError(error, 'Could not download agreement');
       res.status(500).json({
         message: 'Error when downloading agreement',
         error,
@@ -188,6 +212,9 @@ module.exports = {
 
   async validateAndSaveTransactionHash(req, res) {
     try {
+      const { accountId } = req.near;
+      logger.info('Validating and saving transaction hash for grant application', { nearId: accountId });
+
       const grantApplication = await getGrant(req, res);
 
       if (grantApplication.proposalNearTransactionHash) {
@@ -216,6 +243,7 @@ module.exports = {
 
       res.json(grantApplication);
     } catch (error) {
+      reportError(error, 'Could not validate transaction hash');
       res.status(500).json({
         message: 'The transaction could not be validated',
         error,

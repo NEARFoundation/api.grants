@@ -2,8 +2,9 @@ const fs = require('fs');
 const config = require('../config/hellosign');
 // eslint-disable-next-line import/order
 const hellosign = require('hellosign-sdk')({ key: config.apiKey });
-const logger = require('../utilities/logger');
+const { reportError } = require('./errorReportingService');
 const generateContract = require('../utilities/generateContract');
+const logger = require('../utilities/logger');
 
 const options = {
   test_mode: config.testMode,
@@ -15,6 +16,7 @@ const options = {
 module.exports = {
   async createSignatureRequest(grantApplication) {
     try {
+      logger.info('Creating signature request', { nearId: grantApplication.nearId });
       const { email, firstname, lastname } = grantApplication;
       const contractPath = await generateContract(config.templatePath, grantApplication);
 
@@ -46,8 +48,8 @@ module.exports = {
         helloSignRequestUrl,
         helloSignRequestId,
       };
-    } catch (err) {
-      logger.error(err);
+    } catch (error) {
+      reportError(error, 'Hello sign could not create the signature request');
       return {
         helloSignSignatureRequestId: null,
         helloSignRequestUrl: null,
@@ -57,16 +59,20 @@ module.exports = {
   },
   async getSignatureRequestUrl(helloSignSignatureRequestId) {
     try {
+      logger.info('Getting signature request url', { helloSignSignatureRequestId });
+
       const helloSignUrlRequest = await hellosign.embedded.getSignUrl(helloSignSignatureRequestId);
       const helloSignRequestUrl = helloSignUrlRequest.embedded.sign_url;
 
       return helloSignRequestUrl;
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not get signature request url from hello sign');
       return null;
     }
   },
   async isRequestCompleted(helloSignRequestId) {
     try {
+      logger.info('Checking if signature request is completed', { helloSignRequestId });
       const signatureRequest = await hellosign.signatureRequest.get(helloSignRequestId);
 
       const dateAgreementSignatureGrantReceiver = signatureRequest.signature_request.signatures[0].status_code === 'signed' ? new Date() : null;
@@ -76,14 +82,17 @@ module.exports = {
         dateAgreementSignatureGrantReceiver,
         dateAgreementSignatureGrantGiver,
       };
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not get satus of signature from hello sign');
       return {
-        isCompleted: false,
+        dateAgreementSignatureGrantReceiver: null,
+        dateAgreementSignatureGrantGiver: null,
       };
     }
   },
   async downloadAgreement(helloSignRequestId) {
     try {
+      logger.info('Downloading agreement', { helloSignRequestId });
       return new Promise((resolve) => {
         hellosign.signatureRequest.download(helloSignRequestId, { file_type: 'zip' }, (err, res) => {
           const fileName = `tmp/agreements-${Date.now()}-${Math.floor(Math.random() * 100000)}-${helloSignRequestId}.zip`;
@@ -98,7 +107,8 @@ module.exports = {
           });
         });
       });
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not donwload agreement from hello sign');
       return null;
     }
   },

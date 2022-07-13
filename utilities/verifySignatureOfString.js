@@ -1,7 +1,10 @@
 const { sha256 } = require('js-sha256');
 const nearApi = require('near-api-js');
+const logger = require('./logger');
 
-const verifySignatureOfObject = async (signatureObject, messageString, accountId, near) => {
+const verifySignatureOfString = async (signatureObject, messageString, accountId, near) => {
+  logger.info('Verifying signature of string', { accountId });
+
   const account = await near.account(accountId);
   const accessKeys = await account.getAccessKeys();
 
@@ -21,4 +24,4 @@ const verifySignatureOfObject = async (signatureObject, messageString, accountId
   return false;
 };
 
-module.exports = verifySignatureOfObject;
+module.exports = verifySignatureOfString;
