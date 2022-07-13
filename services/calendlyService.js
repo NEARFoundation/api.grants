@@ -1,5 +1,6 @@
 const axios = require('axios');
 const config = require('../config/calendly');
+const { reportError } = require('./errorReportingService');
 
 const headers = {
   Authorization: `Bearer ${config.accessToken}`,
@@ -11,7 +12,8 @@ module.exports = {
     try {
       const { data } = await axios.get(url, { headers });
       return data.resource.start_time;
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not get date event calendly');
       return null;
     }
   },

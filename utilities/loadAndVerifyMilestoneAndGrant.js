@@ -1,4 +1,5 @@
 const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicationModel');
+const { reportError } = require('../services/errorReportingService');
 
 // eslint-disable-next-line max-lines-per-function
 const loadAndVerifyMilestoneAndGrant = async (req, res) => {
@@ -29,9 +30,10 @@ const loadAndVerifyMilestoneAndGrant = async (req, res) => {
 
     // eslint-disable-next-line consistent-return
     return { milestone, grantApplication };
-  } catch (err) {
+  } catch (error) {
+    reportError(error, 'Could not verify or load milestone data');
     res.status(500).json({
-      message: err.message,
+      message: error.message,
     });
   }
 };

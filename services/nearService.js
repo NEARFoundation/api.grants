@@ -2,6 +2,7 @@ const nearApi = require('near-api-js');
 const getTokenId = require('../config/currency');
 const nearConfig = require('../config/near');
 const kycDaoConfig = require('../config/kycDaoConfig');
+const { reportError } = require('./errorReportingService');
 
 module.exports = {
   async verifyTransaction(near, txHash, hashProposal, fundingAmount, nearId) {
@@ -32,7 +33,8 @@ module.exports = {
       /* eslint-enable camelcase */
 
       return false;
-    } catch (e) {
+    } catch (error) {
+      reportError(error, 'Could not verify transaction from NEAR');
       return false;
     }
   },
@@ -47,7 +49,8 @@ module.exports = {
       const proposals = await contract.get_proposals({ from_index: 0, limit: 100000000 });
 
       return proposals;
-    } catch (e) {
+    } catch (error) {
+      reportError(error, 'Could not load proposal from NEAR');
       return [];
     }
   },
@@ -64,8 +67,8 @@ module.exports = {
       const ntnftsKycDao = await contract.ntnft_supply_for_owner({ account_id: accountId });
 
       return ntnftsKycDao > 0;
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      reportError(error, 'Could not verify kyc dao status');
       return false;
     }
   },

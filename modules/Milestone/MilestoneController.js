@@ -4,6 +4,7 @@ const verifySignatureOfObject = require('../../utilities/verifySignatureOfObject
 const verifySignatureOfString = require('../../utilities/verifySignatureOfString');
 const calendlyService = require('../../services/calendlyService');
 const nearService = require('../../services/nearService');
+const { reportError } = require('../../services/errorReportingService');
 
 /**
  * MilestoneController.js
@@ -61,9 +62,10 @@ module.exports = {
       await grantApplication.save();
 
       res.json(grantApplication);
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not submit milestone');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },
@@ -106,9 +108,10 @@ module.exports = {
       await grantApplication.save();
 
       res.json(grantApplication);
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not validate transaction hash of milestone');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },
@@ -149,9 +152,10 @@ module.exports = {
       await grantApplication.save();
 
       res.json(grantApplication);
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not set interview of milestone');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },

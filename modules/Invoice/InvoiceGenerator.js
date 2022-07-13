@@ -2,6 +2,7 @@
 const path = require('path');
 const MicroInvoice = require('microinvoice');
 const getCountry = require('../../utilities/getCountry');
+const { reportError } = require('../../services/errorReportingService');
 
 module.exports = {
   async createInvoice({ filename, payment, grantApplication, invoiceId, invoiceConfig, t }) {
@@ -141,7 +142,8 @@ module.exports = {
             reject(error);
           });
       });
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not generate the invoice');
       return null;
     }
   },

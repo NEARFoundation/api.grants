@@ -5,6 +5,7 @@ const nearService = require('../services/nearService');
 const getPayments = require('./getPayments');
 const hashProposal = require('./hashProposal');
 const grantConfig = require('../config/grant');
+const { reportError } = require('../services/errorReportingService');
 
 // NOTE: This function should be refactored
 
@@ -116,9 +117,10 @@ const getGrant = async (req, res) => {
 
     // eslint-disable-next-line consistent-return
     return grantApplication;
-  } catch (err) {
+  } catch (error) {
+    reportError(error, 'Could not get the grant application');
     res.status(500).json({
-      message: err.message,
+      message: error.message,
     });
   }
 };

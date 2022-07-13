@@ -1,5 +1,6 @@
 const GrantApplicationModel = require('../modules/GrantApplication/GrantApplicationModel');
 const verifySignatureOfObject = require('./verifySignatureOfObject');
+const { reportError } = require('../services/errorReportingService');
 
 // eslint-disable-next-line max-lines-per-function
 const getVerifyAndSaveGrantData = async (req, res) => {
@@ -82,9 +83,10 @@ const getVerifyAndSaveGrantData = async (req, res) => {
 
     // eslint-disable-next-line consistent-return
     return grantApplication;
-  } catch (err) {
+  } catch (error) {
+    reportError(error, 'Could not verify or save grant data');
     res.status(500).json({
-      message: err.message,
+      message: error.message,
     });
   }
 };

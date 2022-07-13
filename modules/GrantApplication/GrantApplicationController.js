@@ -10,6 +10,7 @@ const getGrant = require('../../utilities/getGrant');
 const grantConfig = require('../../config/grant');
 const hellosignService = require('../../services/hellosignService');
 const nearService = require('../../services/nearService');
+const { reportError } = require('../../services/errorReportingService');
 
 /**
  * GrantApplicationController.js
@@ -42,9 +43,10 @@ module.exports = {
       }
 
       res.json(grantApplications);
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not get list grant applications');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },
@@ -53,9 +55,10 @@ module.exports = {
     try {
       const grantApplication = await getGrant(req, res);
       res.json(grantApplication);
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not get grant applications');
       res.status(500).json({
-        message: err.message,
+        message: error.message,
       });
     }
   },
@@ -68,6 +71,7 @@ module.exports = {
 
       res.json(grantApplication);
     } catch (error) {
+      reportError(error, 'Could not save draft');
       res.status(500).json({
         message: 'Error when updating grantApplication.',
         error,
@@ -111,6 +115,7 @@ module.exports = {
 
       res.json(grantApplication);
     } catch (error) {
+      reportError(error, 'Could not submit grant application');
       res.status(500).json({
         message: 'Error when updating grantApplication.',
         error,
@@ -155,6 +160,7 @@ module.exports = {
 
       res.json(grantApplication);
     } catch (error) {
+      reportError(error, 'Could not set interview');
       res.status(500).json({
         message: 'Error when updating grantApplication',
         error,
@@ -179,6 +185,7 @@ module.exports = {
         fs.unlinkSync(fileName);
       });
     } catch (error) {
+      reportError(error, 'Could not download agreement');
       res.status(500).json({
         message: 'Error when downloading agreement',
         error,
@@ -216,6 +223,7 @@ module.exports = {
 
       res.json(grantApplication);
     } catch (error) {
+      reportError(error, 'Could not validate transaction hash');
       res.status(500).json({
         message: 'The transaction could not be validated',
         error,

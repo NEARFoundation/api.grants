@@ -2,7 +2,7 @@ const fs = require('fs');
 const config = require('../config/hellosign');
 // eslint-disable-next-line import/order
 const hellosign = require('hellosign-sdk')({ key: config.apiKey });
-const logger = require('../utilities/logger');
+const { reportError } = require('./errorReportingService');
 const generateContract = require('../utilities/generateContract');
 
 const options = {
@@ -46,8 +46,8 @@ module.exports = {
         helloSignRequestUrl,
         helloSignRequestId,
       };
-    } catch (err) {
-      logger.error(err);
+    } catch (error) {
+      reportError(error, 'Hello sign could not create the signature request');
       return {
         helloSignSignatureRequestId: null,
         helloSignRequestUrl: null,
@@ -61,7 +61,8 @@ module.exports = {
       const helloSignRequestUrl = helloSignUrlRequest.embedded.sign_url;
 
       return helloSignRequestUrl;
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not get signature request url from hello sign');
       return null;
     }
   },
@@ -76,9 +77,11 @@ module.exports = {
         dateAgreementSignatureGrantReceiver,
         dateAgreementSignatureGrantGiver,
       };
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not get satus of signature from hello sign');
       return {
-        isCompleted: false,
+        dateAgreementSignatureGrantReceiver: null,
+        dateAgreementSignatureGrantGiver: null,
       };
     }
   },
@@ -98,7 +101,8 @@ module.exports = {
           });
         });
       });
-    } catch (err) {
+    } catch (error) {
+      reportError(error, 'Could not donwload agreement from hello sign');
       return null;
     }
   },
