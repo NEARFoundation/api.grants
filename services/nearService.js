@@ -42,7 +42,7 @@ module.exports = {
   },
   async loadProposals(account) {
     try {
-      logger.info('Loading proposals', { account });
+      logger.info('Getting proposals to check their status');
       const contract = new nearApi.Contract(account, nearConfig.contractId, {
         viewMethods: ['get_proposals'],
         changeMethods: [],
