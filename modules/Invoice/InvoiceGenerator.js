@@ -12,7 +12,7 @@ module.exports = {
           style: {
             header: {
               image: {
-                path: path.join(__dirname, '../../assets/logo.png'),
+                path: path.join(__dirname, '../../', invoiceConfig.logoPath),
                 width: parseInt(invoiceConfig.logoWidth, 10),
                 height: parseInt(invoiceConfig.logoHeight, 10),
               },
