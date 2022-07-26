@@ -4,9 +4,9 @@
 
 ## Repositories
 
-- [ui.grants](https://github.com/NEARWEEK/ui.grants)
-- [api.grants](https://github.com/NEARWEEK/api.grants)
-- [admin.grants](https://github.com/NEARWEEK/admin.grants)
+- [ui.grants](https://github.com/NEARFoundation/ui.grants)
+- [api.grants](https://github.com/NEARFoundation/api.grants)
+- [admin.grants](https://github.com/NEARFoundation/admin.grants)
 
 ## Technology stack
 
@@ -50,7 +50,7 @@ cp .env.dist .env
 
 #### Agreement signature
 
-> This route has been created as a workaround because it seems like the hellosign API doesn't allow to have one signer using the embedded widget and the other using the hello sign website; more info here: https://github.com/NEARWEEK/api.grants/issues/22#issuecomment-1180164237
+> This route has been created as a workaround because it seems like the hellosign API doesn't allow to have one signer using the embedded widget and the other using the hello sign website; more info here: https://github.com/NEARFoundation/api.grants/issues/22#issuecomment-1180164237
 
 - Route: `/admin/:adminToken/accounts/:nearId/grants/:id/agreement/signature`
   - `adminToken`: ADMIN_TOKEN from the env variable to authorize the request
