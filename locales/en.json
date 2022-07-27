@@ -332,7 +332,7 @@
       "approved": {
         "message": "👍 Your funding has been approved, please verify your account.",
         "button": "Verify account",
-        "nft-message": "✨ In order to finish the KYC process, please mint your Sould Bound Token",
+        "nft-message": "✨ In order to finish the KYC process, please mint your Soul Bound Token",
         "nft-button": "Mint KYC SBT"
       },
       "kyc-completed": {
