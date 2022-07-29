@@ -31,7 +31,8 @@ const getGrant = async (req, res) => {
       return;
     }
 
-    if (grantApplication.dateInterview && appConfig.demoMode) {
+    // demo mode auto approve grant
+    if (appConfig.demoMode && grantApplication.dateInterview && !grantApplication.dateApproval) {
       grantApplication.dateInterviewCompletionConfirmation = new Date();
       grantApplication.dateApproval = new Date();
       await grantApplication.save();
@@ -53,6 +54,12 @@ const getGrant = async (req, res) => {
         grantApplication.dateKycApproved = new Date();
         await grantApplication.save();
       }
+    }
+
+    // Demo mode: auto sign the agreement
+    if (appConfig.demoMode && grantApplication.dateAgreementSignatureGrantReceiver && !grantApplication.dateAgreementSignatureGrantGiver) {
+      grantApplication.dateAgreementSignatureGrantGiver = new Date();
+      await grantApplication.save();
     }
 
     // When the signature has been requested but the agreement not yet signed: check the state of the signature & update the url if needed
