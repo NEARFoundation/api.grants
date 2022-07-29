@@ -8,6 +8,7 @@ const getVerifyAndSaveGrantData = require('../../utilities/getVerifyAndSaveGrant
 const verifySignatureOfString = require('../../utilities/verifySignatureOfString');
 const getGrant = require('../../utilities/getGrant');
 const grantConfig = require('../../config/grant');
+const appConfig = require('../../config/app');
 const hellosignService = require('../../services/hellosignService');
 const nearService = require('../../services/nearService');
 const { reportError } = require('../../services/errorReportingService');
@@ -170,7 +171,15 @@ module.exports = {
       grantApplication.dateInterviewScheduled = new Date();
       grantApplication.dateInterview = await calendlyService.getEventDate(grantApplication.interviewUrl);
 
-      await grantApplication.save();
+      grantApplication.save().then(() => {
+        if (appConfig.demoMode) {
+          setInterval(() => {
+            grantApplication.dateInterviewCompletionConfirmation = new Date();
+            grantApplication.dateApproval = new Date();
+            grantApplication.save();
+          }, 1000);
+        }
+      })
 
       res.json(grantApplication);
     } catch (error) {

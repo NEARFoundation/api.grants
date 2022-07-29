@@ -4,6 +4,7 @@ const config = {
   appName: process.env.APP_NAME || 'FUND3R',
   adminLogin: process.env.ADMIN_LOGIN || 'admin',
   adminPassword: process.env.ADMIN_PASSWORD || 'supersecret',
+  demoMode: process.env.DEMO_MODE || false,
 };
 
 module.exports = config;
