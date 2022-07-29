@@ -45,6 +45,10 @@ const setup = async () => {
   // Set up NEAR
   const nearApi = await setUpNear();
 
+  if (config.demoMode) {
+    logger.info('[FUND3R] Demo mode enabled');
+  }
+
   // Set up middlewares
   app.use(morgan('dev'));
   app.use(express.json());
