@@ -132,6 +132,17 @@ const getGrant = async (req, res) => {
       await grantApplication.save();
     }
 
+    // Demo: auto approve milestones
+    if (appConfig.demoMode) {
+      grantApplication.milestones.map((milestone) => {
+        if (milestone.dateInterviewScheduled && !milestone.dateValidation) {
+          // eslint-disable-next-line no-param-reassign
+          milestone.dateValidation = new Date();
+        }
+        return milestone;
+      });
+    }
+
     // eslint-disable-next-line consistent-return
     return grantApplication;
   } catch (error) {
