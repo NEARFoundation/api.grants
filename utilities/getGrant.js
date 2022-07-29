@@ -141,6 +141,7 @@ const getGrant = async (req, res) => {
         }
         return milestone;
       });
+      await grantApplication.save();
     }
 
     // eslint-disable-next-line consistent-return
