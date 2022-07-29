@@ -5,6 +5,7 @@ const nearService = require('../services/nearService');
 const getPayments = require('./getPayments');
 const hashProposal = require('./hashProposal');
 const grantConfig = require('../config/grant');
+const appConfig = require('../config/app');
 const { reportError } = require('../services/errorReportingService');
 const logger = require('./logger');
 
@@ -28,6 +29,12 @@ const getGrant = async (req, res) => {
         message: 'No such GrantApplication under this near account',
       });
       return;
+    }
+
+    if (grantApplication.dateInterview && appConfig.demoMode) {
+      grantApplication.dateInterviewCompletionConfirmation = new Date();
+      grantApplication.dateApproval = new Date();
+      await grantApplication.save();
     }
 
     // When the interview is scheduled but the interview had not been completed: get the date of the interview
