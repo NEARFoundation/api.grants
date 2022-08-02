@@ -5,6 +5,7 @@ const nearService = require('../services/nearService');
 const getPayments = require('./getPayments');
 const hashProposal = require('./hashProposal');
 const grantConfig = require('../config/grant');
+const appConfig = require('../config/app');
 const { reportError } = require('../services/errorReportingService');
 const logger = require('./logger');
 
@@ -30,6 +31,13 @@ const getGrant = async (req, res) => {
       return;
     }
 
+    // demo mode auto approve grant
+    if (appConfig.demoMode && grantApplication.dateInterview && !grantApplication.dateApproval) {
+      grantApplication.dateInterviewCompletionConfirmation = new Date();
+      grantApplication.dateApproval = new Date();
+      await grantApplication.save();
+    }
+
     // When the interview is scheduled but the interview had not been completed: get the date of the interview
     if (grantApplication.interviewUrl && !grantApplication.dateInterviewCompletionConfirmation) {
       const dateInterview = await calendlyService.getEventDate(grantApplication.interviewUrl);
@@ -46,6 +54,12 @@ const getGrant = async (req, res) => {
         grantApplication.dateKycApproved = new Date();
         await grantApplication.save();
       }
+    }
+
+    // Demo mode: auto sign the agreement
+    if (appConfig.demoMode && grantApplication.dateAgreementSignatureGrantReceiver && !grantApplication.dateAgreementSignatureGrantGiver) {
+      grantApplication.dateAgreementSignatureGrantGiver = new Date();
+      await grantApplication.save();
     }
 
     // When the signature has been requested but the agreement not yet signed: check the state of the signature & update the url if needed
@@ -115,6 +129,18 @@ const getGrant = async (req, res) => {
         grantApplication.dateOnboardingCompletion = new Date();
       }
 
+      await grantApplication.save();
+    }
+
+    // Demo: auto approve milestones
+    if (appConfig.demoMode) {
+      grantApplication.milestones.map((milestone) => {
+        if (milestone.dateInterviewScheduled && !milestone.dateValidation) {
+          // eslint-disable-next-line no-param-reassign
+          milestone.dateValidation = new Date();
+        }
+        return milestone;
+      });
       await grantApplication.save();
     }
 
