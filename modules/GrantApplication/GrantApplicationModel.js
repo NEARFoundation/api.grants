@@ -46,7 +46,6 @@ const GrantApplicationSchema = new Schema(
     addressZip: String,
     howHeardGrants: String,
     referral: String,
-    teamReferral: String,
     comments: String,
     dateLastDraftSaving: Date,
     dateSubmission: Date,

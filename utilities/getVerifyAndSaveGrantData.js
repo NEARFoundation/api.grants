@@ -79,7 +79,6 @@ const getVerifyAndSaveGrantData = async (req, res) => {
     grantApplication.addressZip = grantData.addressZip ? grantData.addressZip : grantApplication.addressZip;
     grantApplication.howHeardGrants = grantData.howHeardGrants ? grantData.howHeardGrants : grantApplication.howHeardGrants;
     grantApplication.referral = grantData.referral ? grantData.referral : grantApplication.referral;
-    grantApplication.teamReferral = grantData.teamReferral ? grantData.teamReferral : grantApplication.teamReferral;
     grantApplication.comments = grantData.comments ? grantData.comments : grantApplication.comments;
     grantApplication.milestones = grantData.milestones ? grantData.milestones : grantApplication.milestones;
     grantApplication.dateLastDraftSaving = new Date();

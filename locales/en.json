@@ -192,18 +192,14 @@
       "error": "Please enter a zip."
     },
     "howHeardGrants": {
-      "label": "How did you hear about the NEAR Grants Program?",
-      "placeholder": "How did you hear about the NEAR Grants Program?",
-      "error": "Please select a how did you hear about NEAR Grants.",
+      "label": "How did you hear about this Grants Program?",
+      "placeholder": "How did you hear about this Grants Program?",
+      "error": "Please answer how did you hear about this Grants.",
       "description": "Please tell us how you found this program! Did you hack with us, see us in a newsletter, or something else?"
     },
     "referral": {
-      "label": "Did someone refer you to the NF Grants Program?",
-      "placeholder": "Did someone refer you to the NF Grants Program?"
-    },
-    "teamReferral": {
-      "label": "Do any of your team members self-identify as the following?",
-      "placeholder": "Do any of your team members self-identify as the following?"
+      "label": "Did someone refer you to this Grants Program?",
+      "placeholder": "Did someone refer you to this Grants Program?"
     },
     "comments": {
       "label": "Comments",
@@ -300,7 +296,7 @@
       },
       "onboarding": {
         "title": "Onboarding",
-        "description": "Once all your paperwork is complete, your team will onboard to the NF Grants and Funding Program. We’ll align on clear timelines, accountability metrics, and reporting expectations. Finally, the FUND3R team will be in contact with you to support your project till completion.",
+        "description": "Once all your paperwork is complete, your team will onboard to this Grants and Funding Program. We’ll align on clear timelines, accountability metrics, and reporting expectations. Finally, the FUND3R team will be in contact with you to support your project till completion.",
         "description-skip": "Once all your paperwork is complete, you will receive some onboarding instructions by email."
       }
     },
@@ -313,7 +309,7 @@
     "status-actions": {
       "submitted": {
         "message": "👍 You have successfully completed the application",
-        "description": "You will receive a follow up email to confirm your application has been received and separately when the review process has started. If you have questions that aren’t answered on near.org/grants, please contact us via email at grants@near.foundation."
+        "description": "You will receive a follow up email to confirm your application has been received and separately when the review process has started."
       },
       "evaluated": {
         "message": "You are invited to an interview. Please, select available date.",
@@ -324,7 +320,7 @@
       },
       "interview-completed": {
         "title": "👍 You have successfully completed the interview",
-        "message": "You will receive a follow up email to confirm your application has been approved. If you have questions that aren’t answered on near.org/grants, please contact us via email at grants@near.foundation.,"
+        "message": "You will receive a follow up email to confirm your application has been approved."
       },
       "denied": {
         "message": "🤷‍♂️ Your application has been denied. Please, check comments and submit your application again."
