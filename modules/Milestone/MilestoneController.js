@@ -6,6 +6,7 @@ const calendlyService = require('../../services/calendlyService');
 const nearService = require('../../services/nearService');
 const { reportError } = require('../../services/errorReportingService');
 const logger = require('../../utilities/logger');
+const grantConfig = require('../../config/grant');
 
 /**
  * MilestoneController.js
@@ -13,6 +14,23 @@ const logger = require('../../utilities/logger');
  * @description :: Server-side logic for managing Milestones.
  */
 module.exports = {
+  async create(req, res) {
+    try {
+      if (!grantConfig.allowMilestonesOnTheGo) {
+        res.status(400).json({
+          message: 'New milestones cannot be created',
+        });
+        return;
+      }
+
+      // get / parse and verify data here
+    } catch (error) {
+      reportError(error, 'Could not create this milestone');
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  },
   async update(req, res) {
     try {
       const { accountId: nearId, near } = req.near;
