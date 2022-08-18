@@ -4,6 +4,11 @@ const router = express.Router();
 const MilestoneController = require('./MilestoneController');
 
 /*
+ * POST (Create a new milestone)
+ */
+router.post('/:id/milestones', MilestoneController.create);
+
+/*
  * POST (Submit a milestone)
  */
 router.post('/:id/milestones/:milestoneId', MilestoneController.update);

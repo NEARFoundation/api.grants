@@ -118,7 +118,6 @@ const createSchema = (t) =>
       .min(1, { message: t('form.howHeardGrants.error') })
       .describe(t('form.howHeardGrants.description')),
     referral: z.string().optional(),
-    teamReferral: z.string().optional(), // to update with an enum
     comments: z
       .string()
       .max(1000, { message: t('form.comments.error') })
