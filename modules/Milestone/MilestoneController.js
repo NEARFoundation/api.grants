@@ -8,6 +8,8 @@ const nearService = require('../../services/nearService');
 const { reportError } = require('../../services/errorReportingService');
 const logger = require('../../utilities/logger');
 const grantConfig = require('../../config/grant');
+const calculateHashProposal = require('../../utilities/hashProposal');
+const GrantApplicationModel = require('../GrantApplication/GrantApplicationModel');
 
 /**
  * MilestoneController.js
@@ -30,6 +32,15 @@ module.exports = {
       logger.info('Updating milestone', { nearId });
 
       const { grantApplication } = await loadAndVerifyMilestoneAndGrant(req, res);
+
+      const grantApplicationWithSalt = await GrantApplicationModel.findOne({
+        // eslint-disable-next-line no-underscore-dangle
+        _id: grantApplication._id,
+      }).select({
+        salt: 1,
+      });
+
+      const { salt } = grantApplicationWithSalt;
 
       const isSignatureValid = await verifySignatureOfObject(signedData, milestoneData, nearId, near);
       if (!isSignatureValid) {
@@ -66,6 +77,8 @@ module.exports = {
         githubUrl: milestoneData.githubUrl,
         attachment: milestoneData.attachment,
         comments: milestoneData.comments,
+        hashProposal: calculateHashProposal(salt, nearId, milestoneData.budget, grantApplication.milestones.length + 1),
+        dateSubmission: new Date(),
       };
 
       grantApplication.milestones.push(milestone);
