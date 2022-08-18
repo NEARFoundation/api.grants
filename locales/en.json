@@ -32,8 +32,8 @@
       "error": "Please enter a valid URL."
     },
     "projectStatus": {
-      "label": "How far is your project?*",
-      "placeholder": "How far is your project?*",
+      "label": "How far along is your project?*",
+      "placeholder": "How far along is your project?*",
       "error": "Please select a project status."
     },
     "projectLaunchDate": {
