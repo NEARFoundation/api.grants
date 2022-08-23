@@ -5,6 +5,12 @@ const configMap = new Map([
       contractId: 'app.kycdao.testnet',
     },
   ],
+  [
+    'mainnet',
+    {
+      contractId: 'app.kycdao.near',
+    },
+  ],
 ]);
 
 const config = {
