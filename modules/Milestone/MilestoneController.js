@@ -191,6 +191,8 @@ module.exports = {
       milestone.proposalNearTransactionHash = proposalNearTransactionHash;
       milestone.isNearProposalValid = true;
 
+      // By setting dateInterviewScheduled, dateInterview & dateValidation,
+      // we are skipping the milestone interview and auto-approve it (only when SKIP_MILESTONE_INTERVIEW_AND_APPROVAL=true)
       if (grantConfig.skipMilestoneInterviewAndApproval) {
         milestone.dateInterviewScheduled = new Date();
         milestone.dateInterview = new Date();
