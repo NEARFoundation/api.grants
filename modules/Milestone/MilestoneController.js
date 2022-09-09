@@ -191,6 +191,12 @@ module.exports = {
       milestone.proposalNearTransactionHash = proposalNearTransactionHash;
       milestone.isNearProposalValid = true;
 
+      if (grantConfig.skipMilestoneInterviewAndApproval) {
+        milestone.dateInterviewScheduled = new Date();
+        milestone.dateInterview = new Date();
+        milestone.dateValidation = new Date();
+      }
+
       await grantApplication.save();
 
       res.json(grantApplication);
